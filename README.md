@@ -42,7 +42,7 @@ At the end of the simulation, population trends are exhibited in a graph
 
   -Each tile is updated at the start of each dat, if theres food, animals, etc.
   
-    -Tiles contain info such as meat, plant food and position.
+  -Tiles contain info such as meat, plant food and position.
     
 -Animals are initiated with Diet and Position. They store other information such as hunger and mate.
 
