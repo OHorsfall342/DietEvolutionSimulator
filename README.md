@@ -1,6 +1,6 @@
 # This is an ecosystem simulation.
 
-A simple simulation made in C, animals move around a grid (or ecosystem) and simulate mating, feeding, hunting etc for several thousand iterations (days)
+A simple simulation made in C#, animals move around a grid (or ecosystem) and simulate mating, feeding, hunting etc for several thousand iterations (days)
 
 At the end of the simulation, population trends are exhibited in a graph 
 
