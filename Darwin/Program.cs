@@ -30,9 +30,13 @@ using System.Runtime.ExceptionServices;
 //update graph system
 //make carnivore food search system search for animals
 
+
+//Suppose each day had 10 action points, s with a speed of 10 could move once a day, while somethign with a speed of 5 could move twice a day?
+
 public static class Globals
 {
     public const int totaldays = 6000;
+    public const int actionsperday = 10; // amount of actions in a day, standard speed of 10 would compelte 1, speed of 5 would complete 2 etc
     public const int mapsize = 10;
     public const int plantval = 60;
     public const int meatval = 200;
@@ -64,9 +68,9 @@ public class Manager
 
         //animallist[0] = new animal(map.main.gridmap[2,2]);//initialise first animal and assign a tile
 
-        animallist.AddNode(new animal(map.main.gridmap[2, 2], 0));//initialise a new animal and add it to the linked lsit
-        animallist.AddNode(new animal(map.main.gridmap[1, 2], 0));
-        animallist.AddNode(new animal(map.main.gridmap[2, 1], 0));
+        animallist.AddNode(new animal(map.main.gridmap[2, 2], 0, 10));//initialise a new animal and add it to the linked lsit
+        animallist.AddNode(new animal(map.main.gridmap[1, 2], 0, 10));
+        animallist.AddNode(new animal(map.main.gridmap[2, 1], 0, 10));
 
         //Console.WriteLine(map.main.gridmap[4, 4].posx);//access the food item of a value
 
@@ -77,7 +81,12 @@ public class Manager
                 Console.WriteLine(daycount);
             }
             map.main.updatetiles();//update all tiles
-            animallist.ActionList();//make animals take action
+            for (int i = 0; i < Globals.actionsperday; i++)
+            {
+                animallist.ActionList();//make animals take action
+            }
+
+                
             daycount++;//increment the days
             //Console.WriteLine(animallist.CountList(0));
             animalCounts.Add(animallist.CountList(0));//add to list for graph
@@ -178,13 +187,19 @@ public class animal
     tile currentTile;
     animal mate;
     List<animal> tileAnimals;
-    int hunger = 100;
+    int hunger = 100; //higher speed should decrease hunger by more
+    //should speed also effect chance of being caught by predators? e.g. same speed gives 75% chance of caught
+    //while a higher speed might give only 50%? i mean a hippo doesnt catch a emu veryoften
+    public int speed = 10;
+
+    int lastaction = 0; //how many turns their last action was
     public int currentx;
     public int currenty;
     public int diet = 0;//0 = vege, 4 = meat eater
 
-    public animal(tile _tile, int _diet)//constructor method
+    public animal(tile _tile, int _diet, int _speed)//constructor method
     {
+        speed = _speed;
         diet = _diet;
         currentTile = _tile;
         currentx = currentTile.posx;
@@ -193,6 +208,11 @@ public class animal
 
     public bool takeaction()//call for the animal to take their turn, return false if dead
     {
+        if (speed > lastaction)
+            lastaction++;
+            return;
+
+        lastaction == 0; //set last action to 0 since its ongoing
         //If hunger > 90, check for mate on same tile, then check for food in tile, then check for mate in nearby tile, then check food nearby
         //Make separate behaviours for each diet
 
@@ -681,8 +701,21 @@ public class animal
                 newdiet++;
             }
         }
+        int newspeed = (int)Math.Round((partner.speed + this.speed) / 2.0);//generate a diet for the new item
+        int randomNumber = random.Next(0, Globals.mutationchance); // Generates a random number between 0 to 20
+        if (randomNumber == 1)
+        {
+            if (newspeed > 1)//if mutation occurs, check it wont go negative
+            {
+                newspeed--;
+            }
+        }
+        if (randomNumber == 2)
+        {
+            newspeed++;
+        }
 
-        Manager.animallist.AddNode(new animal(map.main.gridmap[currentx, currenty], newdiet));//initialise new animal
+        Manager.animallist.AddNode(new animal(map.main.gridmap[currentx, currenty], newdiet, newspeed));//initialise new animal
         hunger = hunger - 40;
         partner.hunger = partner.hunger - 40;//subtract hunger from each animal as a penalty
         //initialise new animal and add it to the position
