@@ -8,6 +8,8 @@ namespace Darwin
         public const int plantval = 60;
         public const int meatval = 200;
         public const int mutationchance = 5;
+        public const float herbivoreThreshold = 0.3f;
+        public const float carnivoreThreshold = 0.7f;
         public const int foodchance = 7;//change these values to see different effects
     }
 }

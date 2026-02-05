@@ -13,15 +13,28 @@ namespace Darwin
         int lastaction = 0; //how many turns their last action was
         public int currentx;
         public int currenty;
-        public int diet = 0;//0 = vege, 4 = meat eater
+        public int diet = 0.0f;//0 = vege, 1.0 = meat eater, check globals for threshholds, inbetween is omnivore
 
-        public animal(tile _tile, int _diet, int _speed)//constructor method
+        public animal(tile _tile, float _diet, int _speed)//constructor method
         {
             speed = _speed;
             diet = _diet;
             currentTile = _tile;
             currentx = currentTile.posx;
             currenty = currentTile.posy;//set current positions to the tile
+
+            if (diet < Globals.herbivoreThreshold)
+            {
+                dietName = "Herbivore";
+            }
+            else if (diet > Globals.carnivoreThreshold)
+            {
+                dietName = "Carnivore";
+            }
+            else
+            {
+                dietName = "Omnivore";
+            }
         }
 
         public bool takeaction()//call for the animal to take their turn, return false if dead
@@ -31,14 +44,8 @@ namespace Darwin
                 return;
 
             lastaction == 0; //set last action to 0 since its ongoing
-            //If hunger > 90, check for mate on same tile, then check for food in tile, then check for mate in nearby tile, then check food nearby
-            //Make separate behaviours for each diet
 
-            //Console.WriteLine(currentx);
-            //Console.WriteLine(currenty);
-            //Console.WriteLine(hunger);
-            //Console.WriteLine();
-            if (diet == 0)
+            if (dietName == "Herbivore")
             {
                 if (hunger > 120)
                 {
@@ -104,7 +111,7 @@ namespace Darwin
 
                 return true;
             }
-            if (diet == 4)
+            if (dietName == "Carnivore")
             {
                 if (hunger > 120)
                 {
@@ -175,7 +182,7 @@ namespace Darwin
 
             }
 
-            else//for diets of 1, 2 and 3
+            else//for omnivores
             {
                 if (hunger > 120)
                 {

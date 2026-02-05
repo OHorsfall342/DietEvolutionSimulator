@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using System.Xml.Linq;
-using System.IO;
-using System.Text;
 using ScottPlot;
-using System.Runtime.ExceptionServices;
 
 
 //TODO:
@@ -61,9 +55,9 @@ namespace Darwin
 
             //animallist[0] = new animal(map.main.gridmap[2,2]);//initialise first animal and assign a tile
 
-            animallist.AddNode(new animal(map.main.gridmap[2, 2], 0, 10));//initialise a new animal and add it to the linked lsit
-            animallist.AddNode(new animal(map.main.gridmap[1, 2], 0, 10));
-            animallist.AddNode(new animal(map.main.gridmap[2, 1], 0, 10));
+            animallist.AddNode(new animal(map.main.gridmap[2, 2], 0.0f, 10));//initialise a new animal and add it to the linked lsit
+            animallist.AddNode(new animal(map.main.gridmap[1, 2], 0.0f, 10));
+            animallist.AddNode(new animal(map.main.gridmap[2, 1], 0.0f, 10));
 
             //Console.WriteLine(map.main.gridmap[4, 4].posx);//access the food item of a value
 
