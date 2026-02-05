@@ -13,7 +13,7 @@ namespace Darwin
         int lastaction = 0; //how many turns their last action was
         public int currentx;
         public int currenty;
-        public int diet = 0.0f;//0 = vege, 1.0 = meat eater, check globals for threshholds, inbetween is omnivore
+        public float diet = 0.0f;//0 = vege, 1.0 = meat eater, check globals for threshholds, inbetween is omnivore
 
         public animal(tile _tile, float _diet, int _speed)//constructor method
         {
@@ -40,10 +40,12 @@ namespace Darwin
         public bool takeaction()//call for the animal to take their turn, return false if dead
         {
             if (speed > lastaction)
+            {
                 lastaction++;
-                return;
+                return true;
+            }
 
-            lastaction == 0; //set last action to 0 since its ongoing
+            lastaction = 0; //set last action to 0 since its ongoing
 
             if (dietName == "Herbivore")
             {
