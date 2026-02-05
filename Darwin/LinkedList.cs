@@ -78,6 +78,7 @@ namespace Darwin
             //Console.WriteLine("fin");
         }
 
+        //if no other animals can be found, return the origina an imal
         public List<animal> SearchList(int searchx, int searchy, animal thisanimal)//Need to make it so it can find multiple different animals
         {
             Node current = head;

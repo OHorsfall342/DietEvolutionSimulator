@@ -503,7 +503,10 @@ namespace Darwin
                     return false;
                 }
             }
-            else 
+            else //return false if no victims found
+            {
+                return false;
+            }
             //Console.WriteLine("NOM");
             Manager.animallist.RemoveNode(victim);//eat the victim
             return true;
