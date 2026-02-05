@@ -100,35 +100,22 @@ namespace Darwin
             return tileanimals;//if no animals found in square return null
             
         }
-        public int CountList(int filter)//counts total number of animals alive
+        public int CountList(string filterDiet)//counts total number of animals alive
         {
-            //filter 0 means all, 1 means veg, 2 means om, 3 means carn
+            //filters based on diet, e.g. carnivore or All
             int counter = 0;
             Node current = head;
             while (current != null)
             {
-                if (filter == 0)
+                if (filterDiet == "All")
                 {
                     counter++;
                 }
-                else if (filter == 1 && current.Data.diet == 0)//outputs number of vegetarians
+                else if (filter == current.Data.dietName)//outputs number of vegetarians, omnivores or carnivores
                 {
                     counter++;
                 }
-                else if (filter == 2)//outputs number of omnivores
-                {
-                    if (current.Data.diet > 0 && current.Data.diet < 4)
-                    {
-                        counter++;
-                    }
-                }
-                else
-                {
-                    if (current.Data.diet == 4)//outputs number of carnivores
-                    {
-                        counter++;
-                    }
-                }
+                
                 current = current.Next;
             }
             return counter;//return the total number of animals

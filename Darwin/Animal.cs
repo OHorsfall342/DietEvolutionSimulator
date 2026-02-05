@@ -312,7 +312,7 @@ namespace Darwin
             // 0 = left, 1 = up, 2 = right, 3 = down
             tilefoods[0] = -1; tilefoods[1] = -1; tilefoods[2] = -1; tilefoods[3] = -1;
             //initialise all to -1 so an invalid tile doesnt get chosen, as the min a valid tile can be is 0
-            if (diet == 0)
+            if (dietname == "Herbivore")
             {
                 if (currentx > 0)//check if on edge
                 {
@@ -370,7 +370,7 @@ namespace Darwin
                 }
             }
 
-            if (diet == 4)
+            if (dietName == "Carnivore")
             {
                 if (currentx > 0)//check if on edge
                 {
@@ -495,9 +495,9 @@ namespace Darwin
             {
                 for(int i = 0; i < tileAnimals.Count; i++)
                 {
-                    if (tileAnimals[i].diet < victim.diet)//try to find a victim that isnt a carnivore, will prioritise veges
+                    if (victim.diet < 0.5)//try to find a victim that isnt a carnivore, will prioritise veges
                     {
-                        victim = tileAnimals[i];
+                        victim = tileAnimals[i];//Change to be size based later
                     }
                 }
                 if (victim == this)//if no victim found return false
@@ -509,40 +509,34 @@ namespace Darwin
             Manager.animallist.RemoveNode(victim);//eat the victim
             return true;
         }
+
         void makechild(animal partner)//pass in a partner to make the child with
         {
-            int newdiet = (int)Math.Round((partner.diet + this.diet) / 2.0);//generate a diet for the new item
+            
             Random random = new Random();
-            int randomNumber = random.Next(0, Globals.mutationchance); // Generates a random number between 0 to 20
-            if (randomNumber == 1)
+            int randomNumber = random.Next(0, Globals.mutationchance); 
+            float newDiet = (partner.diet + this.diet) / 2.0;//generate a diet for the new item
+            int newSpeed = (int)Math.Round((partner.speed + this.speed) / 2.0);//generate a diet for the new item
+            if (randomNumber == 0)
             {
-                if (newdiet != 0)//if mutation occurs, check it wont go negative
-                {
-                    newdiet--;
-                }
-            }
-            if (randomNumber == 2)
-            {
-                if (newdiet != 4)//if mutation occurs, check it wont go over 4
-                {
-                    newdiet++;
-                }
-            }
-            int newspeed = (int)Math.Round((partner.speed + this.speed) / 2.0);//generate a diet for the new item
-            int randomNumber = random.Next(0, Globals.mutationchance); // Generates a random number between 0 to 20
-            if (randomNumber == 1)
-            {
-                if (newspeed > 1)//if mutation occurs, check it wont go negative
-                {
-                    newspeed--;
-                }
-            }
-            if (randomNumber == 2)
-            {
-                newspeed++;
-            }
+                //mutate one variable up or down
+                int trait = random.Next(0, 2); // 0 = diet, 1 = speed
+                int direction = random.Next(0, 2) == 0 ? -1 : 1; // positive or negative
 
-            Manager.animallist.AddNode(new animal(map.main.gridmap[currentx, currenty], newdiet, newspeed));//initialise new animal
+                if (trait == 0)
+                {
+                    
+                    newDiet = Math.Clamp(newDiet + direction * Globals.mutationAmount, 0.0f, 1.0f);
+                }
+                else if (trait == 1)
+                {
+                    
+                    newSpeed = Math.Clamp(newSpeed + direction, 1, Globals.maxSpeed); //find new speed between 1 and max speed
+                }
+
+            }   
+            
+            Manager.animallist.AddNode(new animal(map.main.gridmap[currentx, currenty], newDiet, newSpeed));//initialise new animal
             hunger = hunger - 40;
             partner.hunger = partner.hunger - 40;//subtract hunger from each animal as a penalty
             //initialise new animal and add it to the position

@@ -28,7 +28,7 @@ using ScottPlot;
 //Suppose each day had 10 action points, s with a speed of 10 could move once a day, while somethign with a speed of 5 could move twice a day?
 
 
-
+//system to assure mates are similar enough
 
 //IF CHANGING MAP SIZE, NEED TO CHANGE ANIMAL EDGE CASES
 //USE SPEED ATTRIBUTE TO DECIDE WHICH ANIMAL GOES FIRST IN TURN
@@ -76,10 +76,10 @@ namespace Darwin
                     
                 daycount++;//increment the days
                 //Console.WriteLine(animallist.CountList(0));
-                animalCounts.Add(animallist.CountList(0));//add to list for graph
-                vegCounts.Add(animallist.CountList(1));
-                omCounts.Add(animallist.CountList(2));
-                carnCounts.Add(animallist.CountList(3));
+                animalCounts.Add(animallist.CountList("All"));//add to list for graph
+                vegCounts.Add(animallist.CountList("Herbivore"));
+                omCounts.Add(animallist.CountList("Omnivore"));
+                carnCounts.Add(animallist.CountList("Carnivore"));
             }
 
             ScottPlot.Plot popgraph = new();
