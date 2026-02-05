@@ -111,7 +111,7 @@ namespace Darwin
                 {
                     counter++;
                 }
-                else if (filter == current.Data.dietName)//outputs number of vegetarians, omnivores or carnivores
+                else if (filterDiet == current.Data.dietName)//outputs number of vegetarians, omnivores or carnivores
                 {
                     counter++;
                 }

@@ -13,6 +13,7 @@ namespace Darwin
         int lastaction = 0; //how many turns their last action was
         public int currentx;
         public int currenty;
+        public string dietName;
         public float diet = 0.0f;//0 = vege, 1.0 = meat eater, check globals for threshholds, inbetween is omnivore
 
         public animal(tile _tile, float _diet, int _speed)//constructor method
@@ -108,11 +109,8 @@ namespace Darwin
                     //Console.WriteLine("BRO is ded");
                     return false;//returns false if dead
                 }
-                return true;
-
-
-                return true;
             }
+
             if (dietName == "Carnivore")
             {
                 if (hunger > 120)
@@ -284,7 +282,7 @@ namespace Darwin
                     return true;
                 }
             }
-            if (currentx < Globals.mapsize)//check if on edge
+            if (currentx < Globals.mapsize - 1)//check if on edge
             {
                 if (Manager.animallist.SearchList(currentx + 1, currenty, this).Count != 0)//find mate, move to that tile
                 {
@@ -293,7 +291,7 @@ namespace Darwin
                     return true;
                 }
             }
-            if (currenty < Globals.mapsize)//check if on edge
+            if (currenty < Globals.mapsize - 1)//check if on edge
             {
                 if (Manager.animallist.SearchList(currentx, currenty + 1, this).Count != 0)//find mate, move to that tile
                 {
@@ -312,7 +310,7 @@ namespace Darwin
             // 0 = left, 1 = up, 2 = right, 3 = down
             tilefoods[0] = -1; tilefoods[1] = -1; tilefoods[2] = -1; tilefoods[3] = -1;
             //initialise all to -1 so an invalid tile doesnt get chosen, as the min a valid tile can be is 0
-            if (dietname == "Herbivore")
+            if (dietName == "Herbivore")
             {
                 if (currentx > 0)//check if on edge
                 {
@@ -440,7 +438,7 @@ namespace Darwin
                 }
                 if (currentx < Globals.mapsize - 1)//check if on edge
                 {
-                    tilefoods[2] = map.main.gridmap[currentx + 1, currenty].plants + tilefoods[2] + map.main.gridmap[currentx + 1, currenty].meat;
+                    tilefoods[2] = map.main.gridmap[currentx + 1, currenty].plants + map.main.gridmap[currentx + 1, currenty].meat;
 
                 }
                 if (currenty > 0)//check if on edge
@@ -495,16 +493,17 @@ namespace Darwin
             {
                 for(int i = 0; i < tileAnimals.Count; i++)
                 {
-                    if (victim.diet < 0.5)//try to find a victim that isnt a carnivore, will prioritise veges
+                    if (tileAnimals[i].diet < victim.diet)//try to find a victim that isnt a carnivore, will prioritise veges
                     {
                         victim = tileAnimals[i];//Change to be size based later
                     }
                 }
-                if (victim == this)//if no victim found return false
+                if (victim == this)//if no victim found as the victim has remained as the animal that called it
                 {
                     return false;
                 }
             }
+            else 
             //Console.WriteLine("NOM");
             Manager.animallist.RemoveNode(victim);//eat the victim
             return true;
@@ -515,7 +514,7 @@ namespace Darwin
             
             Random random = new Random();
             int randomNumber = random.Next(0, Globals.mutationchance); 
-            float newDiet = (partner.diet + this.diet) / 2.0;//generate a diet for the new item
+            float newDiet = (partner.diet + this.diet) / 2.0f;//generate a diet for the new item
             int newSpeed = (int)Math.Round((partner.speed + this.speed) / 2.0);//generate a diet for the new item
             if (randomNumber == 0)
             {
