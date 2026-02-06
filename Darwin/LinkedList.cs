@@ -10,7 +10,7 @@ namespace Darwin
         }
 
         // Add a node to the end of the list
-        public void AddNode(animal data)//add a node to the list
+        public void AddNode(Animal data)//add a node to the list
         {
             Node newNode = new Node(data);
             if (head == null)
@@ -29,7 +29,7 @@ namespace Darwin
         }
 
         // Remove a node with the specified data
-        public void RemoveNode(animal data)//remove a node
+        public void RemoveNode(Animal data)//remove a node
         {
             if (head == null)
             {
@@ -67,7 +67,7 @@ namespace Darwin
             Node current = head;
             while (current != null)
             {
-                if (current.Data.takeaction() == false)
+                if (current.Data.TakeAction() == false)
                 {
 
                     RemoveNode(current.Data);//if return false, hunger = 0 so kill 
@@ -79,15 +79,15 @@ namespace Darwin
         }
 
         //if no other animals can be found, return the origina an imal
-        public List<animal> SearchList(int searchx, int searchy, animal thisanimal)//Need to make it so it can find multiple different animals
+        public List<Animal> SearchList(int searchx, int searchy, Animal thisanimal)//Need to make it so it can find multiple different animals
         {
             Node current = head;
-            List<animal> tileanimals = new List<animal>();
+            List<Animal> tileanimals = new List<Animal>();
             while (current != null)
             {
-                if (current.Data.currentx == searchx)
+                if (current.Data.currentX == searchx)
                 {
-                    if (current.Data.currenty == searchy)
+                    if (current.Data.currentY == searchy)
                     {
                         if (current.Data != thisanimal)//prevent the animals from finding themselves
                         {
@@ -126,10 +126,10 @@ namespace Darwin
 
     public class Node//code for ndoes in the linked lsit
     {
-        public animal Data { get; set; }
+        public Animal Data { get; set; }
         public Node Next { get; set; }
 
-        public Node(animal data)
+        public Node(Animal data)
         {
             this.Data = data;
             this.Next = null;

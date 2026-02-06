@@ -1,28 +1,28 @@
 namespace Darwin
 {
-    public class animal
+    public class Animal
     {
-        tile currentTile;
-        animal mate;
-        List<animal> tileAnimals;
+        Tile currentTile;
+        Animal mate;
+        List<Animal> tileAnimals;
         int hunger = 100; //higher speed should decrease hunger by more
         //should speed also effect chance of being caught by predators? e.g. same speed gives 75% chance of caught
         //while a higher speed might give only 50%? i mean a hippo doesnt catch a emu veryoften
         public int speed = 10;
 
-        int lastaction = 0; //how many turns their last action was
-        public int currentx;
-        public int currenty;
+        int lastAction = 0; //how many turns their last action was
+        public int currentX;
+        public int currentY;
         public string dietName;
         public float diet = 0.0f;//0 = vege, 1.0 = meat eater, check globals for threshholds, inbetween is omnivore
 
-        public animal(tile _tile, float _diet, int _speed)//constructor method
+        public Animal(Tile _tile, float _diet, int _speed)//constructor method
         {
             speed = _speed;
             diet = _diet;
             currentTile = _tile;
-            currentx = currentTile.posx;
-            currenty = currentTile.posy;//set current positions to the tile
+            currentX = currentTile.posx;
+            currentY = currentTile.posy;//set current positions to the Tile
 
             if (diet < Globals.herbivoreThreshold)
             {
@@ -38,15 +38,15 @@ namespace Darwin
             }
         }
 
-        public bool takeaction()//call for the animal to take their turn, return false if dead
+        public bool TakeAction()//call for the Animal to take their turn, return false if dead
         {
-            if (speed > lastaction)
+            if (speed > lastAction)
             {
-                lastaction++;
+                lastAction++;
                 return true;
             }
 
-            lastaction = 0; //set last action to 0 since its ongoing
+            lastAction = 0; //set last action to 0 since its ongoing
 
             
             if (hunger > 120)
@@ -58,7 +58,7 @@ namespace Darwin
             }
             //for if hunger is lower than decided value
             
-            if (hunger <= 0)//check if animal is dead
+            if (hunger <= 0)//check if Animal is dead
             {
                 return false;//returns false if dead
             }
@@ -66,79 +66,79 @@ namespace Darwin
         }
         
         
-        bool findmate()//move to anearby tile with a mate
+        bool FindMate()//move to anearby Tile with a mate
         {
-            if (currentx > 0)//check if on edge
+            if (currentX > 0)//check if on edge
             {
-                if (Manager.animallist.SearchList(currentx - 1, currenty, this).Count != 0)//find mate, move to that tile
+                if (Manager.animalList.SearchList(currentX - 1, currentY, this).Count != 0)//find mate, move to that Tile
                 {
-                    currentTile = map.main.gridmap[currentx - 1, currenty];
-                    currentx = currentx - 1;//set new currentx
+                    currentTile = Map.main.gridMap[currentX - 1, currentY];
+                    currentX = currentX - 1;//set new currentX
                     return true;
                 }
             }
-            if (currenty > 0)//check if on edge
+            if (currentY > 0)//check if on edge
             {
-                if (Manager.animallist.SearchList(currentx, currenty - 1, this).Count != 0)//find mate, move to that tile
+                if (Manager.animalList.SearchList(currentX, currentY - 1, this).Count != 0)//find mate, move to that Tile
                 {
-                    currentTile = map.main.gridmap[currentx, currenty - 1];
-                    currenty = currenty - 1; //set new currenty
+                    currentTile = Map.main.gridMap[currentX, currentY - 1];
+                    currentY = currentY - 1; //set new currentY
                     return true;
                 }
             }
-            if (currentx < Globals.mapsize - 1)//check if on edge
+            if (currentX < Globals.mapsize - 1)//check if on edge
             {
-                if (Manager.animallist.SearchList(currentx + 1, currenty, this).Count != 0)//find mate, move to that tile
+                if (Manager.animalList.SearchList(currentX + 1, currentY, this).Count != 0)//find mate, move to that Tile
                 {
-                    currentTile = map.main.gridmap[currentx + 1, currenty];
-                    currentx = currentx + 1;//set new currentx
+                    currentTile = Map.main.gridMap[currentX + 1, currentY];
+                    currentX = currentX + 1;//set new currentX
                     return true;
                 }
             }
-            if (currenty < Globals.mapsize - 1)//check if on edge
+            if (currentY < Globals.mapsize - 1)//check if on edge
             {
-                if (Manager.animallist.SearchList(currentx, currenty + 1, this).Count != 0)//find mate, move to that tile
+                if (Manager.animalList.SearchList(currentX, currentY + 1, this).Count != 0)//find mate, move to that Tile
                 {
-                    currentTile = map.main.gridmap[currentx, currenty + 1];
-                    currenty = currenty + 1;
+                    currentTile = Map.main.gridMap[currentX, currentY + 1];
+                    currentY = currentY + 1;
                     return true;
                 }
             }
             return false;
         }
-        bool findfood()//move to a nearby tile with food, return true if food found and moved
+        bool FindFood()//move to a nearby Tile with food, return true if food found and moved
         {
             int besttile = 0;
             int currentbest = 0;
-            int[] tilefoods = new int[4];//stores the amount of food in each tile, so the best tile can be selected
+            int[] tilefoods = new int[4];//stores the amount of food in each Tile, so the best Tile can be selected
             // 0 = left, 1 = up, 2 = right, 3 = down
             tilefoods[0] = -1; tilefoods[1] = -1; tilefoods[2] = -1; tilefoods[3] = -1;
-            //initialise all to -1 so an invalid tile doesnt get chosen, as the min a valid tile can be is 0
+            //initialise all to -1 so an invalid Tile doesnt get chosen, as the min a valid Tile can be is 0
             if (dietName == "Herbivore")
             {
-                if (currentx > 0)//check if on edge
+                if (currentX > 0)//check if on edge
                 {
-                    tilefoods[0] = map.main.gridmap[currentx - 1, currenty].plants;
+                    tilefoods[0] = Map.main.gridMap[currentX - 1, currentY].plants;
                 }
-                if (currenty < Globals.mapsize - 1)//check if on edge
+                if (currentY < Globals.mapsize - 1)//check if on edge
                 {
-                    tilefoods[1] = map.main.gridmap[currentx, currenty + 1].plants;
+                    tilefoods[1] = Map.main.gridMap[currentX, currentY + 1].plants;
                 }
-                if (currentx < Globals.mapsize - 1)//check if on edge
+                if (currentX < Globals.mapsize - 1)//check if on edge
                 {
-                    tilefoods[2] = map.main.gridmap[currentx + 1, currenty].plants;
+                    tilefoods[2] = Map.main.gridMap[currentX + 1, currentY].plants;
 
                 }
-                if (currenty > 0)//check if on edge
+                if (currentY > 0)//check if on edge
                 {
-                    tilefoods[3] = map.main.gridmap[currentx, currenty - 1].plants;//store the amount of food in each tile to be compared
+                    tilefoods[3] = Map.main.gridMap[currentX, currentY - 1].plants;//store the amount of food in each Tile to be compared
                 }
 
-                for (int i = 0; i < tilefoods.Length; i++)//find best tile
+                for (int i = 0; i < tilefoods.Length; i++)//find best Tile
                 {
                     if (tilefoods[i] > currentbest)
                     {
-                        currentbest = tilefoods[i];//will find the best tile and the value
+                        currentbest = tilefoods[i];//will find the best Tile and the value
                         besttile = i;
                     }
                 }
@@ -148,55 +148,55 @@ namespace Darwin
                 }
                 if (besttile == 0)
                 {
-                    currentTile = map.main.gridmap[currentx - 1, currenty];//update co-ords
-                    currentx = currentx - 1;//set new currentx
+                    currentTile = Map.main.gridMap[currentX - 1, currentY];//update co-ords
+                    currentX = currentX - 1;//set new currentX
                     return true;
                 }
                 if (besttile == 1)
                 {
-                    currentTile = map.main.gridmap[currentx, currenty + 1];
-                    currenty = currenty + 1; //set new currenty
+                    currentTile = Map.main.gridMap[currentX, currentY + 1];
+                    currentY = currentY + 1; //set new currentY
                     return true;
                 }
                 if (besttile == 2)
                 {
-                    currentTile = map.main.gridmap[currentx + 1, currenty];
-                    currentx = currentx + 1;//set new currentx
+                    currentTile = Map.main.gridMap[currentX + 1, currentY];
+                    currentX = currentX + 1;//set new currentX
                     return true;
                 }
                 else
                 {
-                    currentTile = map.main.gridmap[currentx, currenty - 1];
-                    currenty = currenty - 1; //set new currenty
+                    currentTile = Map.main.gridMap[currentX, currentY - 1];
+                    currentY = currentY - 1; //set new currentY
                     return true;
                 }
             }
 
             if (dietName == "Carnivore")
             {
-                if (currentx > 0)//check if on edge
+                if (currentX > 0)//check if on edge
                 {
-                    tilefoods[0] = map.main.gridmap[currentx - 1, currenty].meat;
+                    tilefoods[0] = Map.main.gridMap[currentX - 1, currentY].meat;
                 }
-                if (currenty < Globals.mapsize - 1)//check if on edge
+                if (currentY < Globals.mapsize - 1)//check if on edge
                 {
-                    tilefoods[1] = map.main.gridmap[currentx, currenty + 1].meat;
+                    tilefoods[1] = Map.main.gridMap[currentX, currentY + 1].meat;
                 }
-                if (currentx < Globals.mapsize - 1)//check if on edge
+                if (currentX < Globals.mapsize - 1)//check if on edge
                 {
-                    tilefoods[2] = map.main.gridmap[currentx + 1, currenty].meat;
+                    tilefoods[2] = Map.main.gridMap[currentX + 1, currentY].meat;
 
                 }
-                if (currenty > 0)//check if on edge
+                if (currentY > 0)//check if on edge
                 {
-                    tilefoods[3] = map.main.gridmap[currentx, currenty - 1].meat;//store the amount of food in each tile to be compared
+                    tilefoods[3] = Map.main.gridMap[currentX, currentY - 1].meat;//store the amount of food in each Tile to be compared
                 }
 
-                for (int i = 0; i < tilefoods.Length; i++)//find best tile
+                for (int i = 0; i < tilefoods.Length; i++)//find best Tile
                 {
                     if (tilefoods[i] > currentbest)
                     {
-                        currentbest = tilefoods[i];//will find the best tile and the value
+                        currentbest = tilefoods[i];//will find the best Tile and the value
                         besttile = i;
                     }
                 }
@@ -206,55 +206,55 @@ namespace Darwin
                 }
                 if (besttile == 0)
                 {
-                    currentTile = map.main.gridmap[currentx - 1, currenty];//update co-ords
-                    currentx = currentx - 1;//set new currentx
+                    currentTile = Map.main.gridMap[currentX - 1, currentY];//update co-ords
+                    currentX = currentX - 1;//set new currentX
                     return true;
                 }
                 if (besttile == 1)
                 {
-                    currentTile = map.main.gridmap[currentx, currenty + 1];
-                    currenty = currenty + 1; //set new currenty
+                    currentTile = Map.main.gridMap[currentX, currentY + 1];
+                    currentY = currentY + 1; //set new currentY
                     return true;
                 }
                 if (besttile == 2)
                 {
-                    currentTile = map.main.gridmap[currentx + 1, currenty];
-                    currentx = currentx + 1;//set new currentx
+                    currentTile = Map.main.gridMap[currentX + 1, currentY];
+                    currentX = currentX + 1;//set new currentX
                     return true;
                 }
                 else
                 {
-                    currentTile = map.main.gridmap[currentx, currenty - 1];
-                    currenty = currenty - 1; //set new currenty
+                    currentTile = Map.main.gridMap[currentX, currentY - 1];
+                    currentY = currentY - 1; //set new currentY
                     return true;
                 }
             }
 
             else//for if they are omnivorous
             {
-                if (currentx > 0)//check if on edge
+                if (currentX > 0)//check if on edge
                 {
-                    tilefoods[0] = map.main.gridmap[currentx - 1, currenty].plants + map.main.gridmap[currentx - 1, currenty].meat;
+                    tilefoods[0] = Map.main.gridMap[currentX - 1, currentY].plants + Map.main.gridMap[currentX - 1, currentY].meat;
                 }
-                if (currenty < Globals.mapsize - 1)//check if on edge
+                if (currentY < Globals.mapsize - 1)//check if on edge
                 {
-                    tilefoods[1] = map.main.gridmap[currentx, currenty + 1].plants + map.main.gridmap[currentx, currenty + 1].meat;
+                    tilefoods[1] = Map.main.gridMap[currentX, currentY + 1].plants + Map.main.gridMap[currentX, currentY + 1].meat;
                 }
-                if (currentx < Globals.mapsize - 1)//check if on edge
+                if (currentX < Globals.mapsize - 1)//check if on edge
                 {
-                    tilefoods[2] = map.main.gridmap[currentx + 1, currenty].plants + map.main.gridmap[currentx + 1, currenty].meat;
+                    tilefoods[2] = Map.main.gridMap[currentX + 1, currentY].plants + Map.main.gridMap[currentX + 1, currentY].meat;
 
                 }
-                if (currenty > 0)//check if on edge
+                if (currentY > 0)//check if on edge
                 {
-                    tilefoods[3] = map.main.gridmap[currentx, currenty - 1].plants + map.main.gridmap[currentx, currenty - 1].meat;//store the amount of food in each tile to be compared
+                    tilefoods[3] = Map.main.gridMap[currentX, currentY - 1].plants + Map.main.gridMap[currentX, currentY - 1].meat;//store the amount of food in each Tile to be compared
                 }
 
-                for (int i = 0; i < tilefoods.Length; i++)//find best tile
+                for (int i = 0; i < tilefoods.Length; i++)//find best Tile
                 {
                     if (tilefoods[i] > currentbest)
                     {
-                        currentbest = tilefoods[i];//will find the best tile and the value
+                        currentbest = tilefoods[i];//will find the best Tile and the value
                         besttile = i;
                     }
                 }
@@ -264,35 +264,35 @@ namespace Darwin
                 }
                 if (besttile == 0)
                 {
-                    currentTile = map.main.gridmap[currentx - 1, currenty];//update co-ords
-                    currentx = currentx - 1;//set new currentx
+                    currentTile = Map.main.gridMap[currentX - 1, currentY];//update co-ords
+                    currentX = currentX - 1;//set new currentX
                     return true;
                 }
                 if (besttile == 1)
                 {
-                    currentTile = map.main.gridmap[currentx, currenty + 1];
-                    currenty = currenty + 1; //set new currenty
+                    currentTile = Map.main.gridMap[currentX, currentY + 1];
+                    currentY = currentY + 1; //set new currentY
                     return true;
                 }
                 if (besttile == 2)
                 {
-                    currentTile = map.main.gridmap[currentx + 1, currenty];
-                    currentx = currentx + 1;//set new currentx
+                    currentTile = Map.main.gridMap[currentX + 1, currentY];
+                    currentX = currentX + 1;//set new currentX
                     return true;
                 }
                 else
                 {
-                    currentTile = map.main.gridmap[currentx, currenty - 1];
-                    currenty = currenty - 1; //set new currenty
+                    currentTile = Map.main.gridMap[currentX, currentY - 1];
+                    currentY = currentY - 1; //set new currentY
                     return true;
                 }
             }//for omnivores
         }
 
-        bool huntforfood()
+        bool HuntForFood()
         {
-            tileAnimals = Manager.animallist.SearchList(currentx, currenty, this);//if a valid mea exists on tile, eat it
-            animal victim = this;
+            tileAnimals = Manager.animalList.SearchList(currentX, currentY, this);//if a valid mea exists on Tile, eat it
+            Animal victim = this;
             if (tileAnimals.Count != 0)
             {
                 for(int i = 0; i < tileAnimals.Count; i++)
@@ -302,7 +302,7 @@ namespace Darwin
                         victim = tileAnimals[i];//Change to be size based later
                     }
                 }
-                if (victim == this)//if no victim found as the victim has remained as the animal that called it
+                if (victim == this)//if no victim found as the victim has remained as the Animal that called it
                 {
                     return false;
                 }
@@ -312,11 +312,11 @@ namespace Darwin
                 return false;
             }
             //Console.WriteLine("NOM");
-            Manager.animallist.RemoveNode(victim);//eat the victim
+            Manager.animalList.RemoveNode(victim);//eat the victim
             return true;
         }
 
-        void makechild(animal partner)//pass in a partner to make the child with
+        void MakeChild(Animal partner)//pass in a partner to make the child with
         {
             
             Random random = new Random();
@@ -342,10 +342,10 @@ namespace Darwin
 
             }   
             
-            Manager.animallist.AddNode(new animal(map.main.gridmap[currentx, currenty], newDiet, newSpeed));//initialise new animal
+            Manager.animalList.AddNode(new Animal(Map.main.gridMap[currentX, currentY], newDiet, newSpeed));//initialise new Animal
             hunger = hunger - 40;
-            partner.hunger = partner.hunger - 40;//subtract hunger from each animal as a penalty
-            //initialise new animal and add it to the position
+            partner.hunger = partner.hunger - 40;//subtract hunger from each Animal as a penalty
+            //initialise new Animal and add it to the position
             //change this for evo later
             //Console.WriteLine("BABY");
 
@@ -353,12 +353,12 @@ namespace Darwin
 
         void SeekMateOrFood()
         {
-            tileAnimals = Manager.animallist.SearchList(currentx, currenty, this);//find if theres a mate on this tile
+            tileAnimals = Manager.animalList.SearchList(currentX, currentY, this);//find if theres a mate on this Tile
             if (tileAnimals.Count != 0)//check to see if the list is empty
             {
                 
-                mate = tileAnimals[0];//for nor make mate just first animal
-                makechild(mate);
+                mate = tileAnimals[0];//for nor make mate just first Animal
+                MakeChild(mate);
             }
 
             else if (EatFromTile())
@@ -368,11 +368,11 @@ namespace Darwin
                     
             else
             {
-                if (findmate() == true)
+                if (FindMate() == true)
                 {
                     hunger = hunger - 10;//make hungrier due to moving
                 }
-                else if (findfood() == true)
+                else if (FindFood() == true)
                 {
                     hunger = hunger - 10;//make hungrier due to moving
                 }
@@ -387,7 +387,7 @@ namespace Darwin
                 }
                 else
                 {
-                    if (findfood() == true)
+                    if (FindFood() == true)
                     {
                         hunger = hunger - 10;//make hungrier due to moving
                     }

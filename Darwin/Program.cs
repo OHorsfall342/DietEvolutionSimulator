@@ -11,7 +11,7 @@ using ScottPlot;
 
 
 //Make children inherit information from parents
-//Update animal constructor method
+//Update Animal constructor method
 //Add more globals to allow for greater customisation
 
 //Make searchmate only work for those with similar diet
@@ -30,14 +30,14 @@ using ScottPlot;
 
 //system to assure mates are similar enough
 
-//IF CHANGING MAP SIZE, NEED TO CHANGE ANIMAL EDGE CASES
-//USE SPEED ATTRIBUTE TO DECIDE WHICH ANIMAL GOES FIRST IN TURN
+//IF CHANGING Map SIZE, NEED TO CHANGE Animal EDGE CASES
+//USE SPEED ATTRIBUTE TO DECIDE WHICH Animal GOES FIRST IN TURN
 namespace Darwin
 {
     public class Manager
     {
-        //public static animal[] animallist = new animal[100];//list to store animals in
-        public static LinkedList animallist = new LinkedList();
+        //public static Animal[] animalList = new Animal[100];//list to store animals in
+        public static LinkedList animalList = new LinkedList();
 
         
         
@@ -51,15 +51,15 @@ namespace Darwin
 
             int daycount = 0;//count the days, end sim after certain number of days
             bool alldead = false;
-            map.main = new map();//initialise new map
+            Map.main = new Map();//initialise new Map
 
-            //animallist[0] = new animal(map.main.gridmap[2,2]);//initialise first animal and assign a tile
+            //animalList[0] = new Animal(Map.main.gridMap[2,2]);//initialise first Animal and assign a Tile
 
-            animallist.AddNode(new animal(map.main.gridmap[2, 2], 0.0f, 10));//initialise a new animal and add it to the linked lsit
-            animallist.AddNode(new animal(map.main.gridmap[1, 2], 0.0f, 10));
-            animallist.AddNode(new animal(map.main.gridmap[2, 1], 0.0f, 10));
+            animalList.AddNode(new Animal(Map.main.gridMap[2, 2], 0.0f, 10));//initialise a new Animal and add it to the linked lsit
+            animalList.AddNode(new Animal(Map.main.gridMap[1, 2], 0.0f, 10));
+            animalList.AddNode(new Animal(Map.main.gridMap[2, 1], 0.0f, 10));
 
-            //Console.WriteLine(map.main.gridmap[4, 4].posx);//access the food item of a value
+            //Console.WriteLine(Map.main.gridMap[4, 4].posx);//access the food item of a value
 
             while (daycount < Globals.totaldays)
             {
@@ -67,19 +67,19 @@ namespace Darwin
                 {
                     Console.WriteLine(daycount);
                 }
-                map.main.updatetiles();//update all tiles
+                Map.main.UpdateTiles();//update all tiles
                 for (int i = 0; i < Globals.actionsperday; i++)
                 {
-                    animallist.ActionList();//make animals take action
+                    animalList.ActionList();//make animals take action
                 }
 
                     
                 daycount++;//increment the days
-                //Console.WriteLine(animallist.CountList(0));
-                animalCounts.Add(animallist.CountList("All"));//add to list for graph
-                vegCounts.Add(animallist.CountList("Herbivore"));
-                omCounts.Add(animallist.CountList("Omnivore"));
-                carnCounts.Add(animallist.CountList("Carnivore"));
+                //Console.WriteLine(animalList.CountList(0));
+                animalCounts.Add(animalList.CountList("All"));//add to list for graph
+                vegCounts.Add(animalList.CountList("Herbivore"));
+                omCounts.Add(animalList.CountList("Omnivore"));
+                carnCounts.Add(animalList.CountList("Carnivore"));
             }
 
             ScottPlot.Plot popgraph = new();

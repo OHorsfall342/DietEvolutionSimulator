@@ -1,33 +1,33 @@
 namespace Darwin{
 
 
-    public class map
+    public class Map
     {
-        // Static member to hold the main instance of the map class.
-        public static map main;//initialise static map
-        public tile[,] gridmap = new tile[Globals.mapsize, Globals.mapsize];//initialise gridmap as what is defined in globals
+        // Static member to hold the main instance of the Map class.
+        public static Map main;//initialise static Map
+        public Tile[,] gridMap = new Tile[Globals.mapsize, Globals.mapsize];//initialise gridMap as what is defined in globals
 
-        public map()
+        public Map()
         {
             
             for (int i = 0; i < Globals.mapsize; i++)
             {
                 for (int j = 0; j < Globals.mapsize; j++)
                 {
-                    gridmap[i,j] = new tile(i, j);
-                    //fill the gridmap array with tiles
+                    gridMap[i,j] = new Tile(i, j);
+                    //fill the gridMap array with tiles
                 }
             }
                 
         }
-        public void updatetiles()//update each tile before the animals use their turn
+        public void UpdateTiles()//update each Tile before the animals use their turn
         {
             for (int i = 0; i < Globals.mapsize; i++)
             {
                 for (int j = 0; j < Globals.mapsize; j++)
                 {
-                    gridmap[i, j].updatethetile();
-                    //fill the gridmap array with tiles
+                    gridMap[i, j].UpdateTile();
+                    //fill the gridMap array with tiles
                 }
             }
         }

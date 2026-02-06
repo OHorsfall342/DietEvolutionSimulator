@@ -40,26 +40,26 @@ At the end of the simulation, population trends are exhibited in a graph
 
 -Map is a grid of Tiles
 
-  -Each tile is updated at the start of each dat, if theres food, animals, etc.
+  -Each Tile is updated at the start of each dat, if theres food, animals, etc.
   
   -Tiles contain info such as meat, plant food and position.
     
 -Animals are initiated with Diet and Position. They store other information such as hunger and mate.
 
-  -TakeAction is called for every animal every turn, decides what they should do and if they are dead.
+  -TakeAction is called for every Animal every turn, decides what they should do and if they are dead.
   
-  -FindMate and FindFood both use pathfinding to find the closest relevant animal/food.
+  -FindMate and FindFood both use pathfinding to find the closest relevant Animal/food.
   
-  -HuntforFood allows eating of other animals, MakeChild breeds an offspring
+  -HuntForFood allows eating of other animals, MakeChild breeds an offspring
   
--A handmade linked list is used to store every animal and iterated through to action all of them.
+-A handmade linked list is used to store every Animal and iterated through to action all of them.
 
 
 # Next Steps
 
--Add more animal traits, like being able to have multiple children, get hungry slower, be faster etc.
+-Add more Animal traits, like being able to have multiple children, get hungry slower, be faster etc.
 
--Add environments in different parts of the map.
+-Add environments in different parts of the Map.
 
 -More detailed mutation mechanics
 
