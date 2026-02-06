@@ -100,15 +100,37 @@ namespace Darwin
                 days[i] = i + 1;
             }
 
-            popGraph.Add.Scatter(days, omCounts.ToArray());
-            popGraph.Add.Scatter(days, vegCounts.ToArray());
-            popGraph.Add.Scatter(days, carnCounts.ToArray());
+            var omCountPlot = popGraph.Add.Scatter(days, omCounts.ToArray());
+            omCountPlot.LineWidth = 50;
+            omCountPlot.MarkerSize = 0;
+            omCountPlot.LegendText = "Omnivore";
+
+            var vegCountPlot = popGraph.Add.Scatter(days, vegCounts.ToArray());
+            vegCountPlot.LineWidth = 10;
+            vegCountPlot.MarkerSize = 0;
+            vegCountPlot.LegendText = "Herbivore";
+
+            var carnCountPlot = popGraph.Add.Scatter(days, carnCounts.ToArray());
+            carnCountPlot.LineWidth = 10;
+            carnCountPlot.MarkerSize = 0;
+            carnCountPlot.LegendText = "Carnivore";
 
             popGraph.SavePng("Poplinegraph.png", 25000, 5000);//save file with name and dimensions
 
-            speedGraph.Add.Scatter(days, omSpeed.ToArray());
-            speedGraph.Add.Scatter(days, vegSpeed.ToArray());
-            speedGraph.Add.Scatter(days, carnSpeed.ToArray());
+            var omSpeedPlot = speedGraph.Add.Scatter(days, omSpeed.ToArray());
+            omSpeedPlot.LineWidth = 30;
+            omSpeedPlot.MarkerSize = 0;
+            omSpeedPlot.LegendText = "Omnivore";
+
+            var vegSpeedPlot = speedGraph.Add.Scatter(days, vegSpeed.ToArray());
+            vegSpeedPlot.LineWidth = 10;
+            vegSpeedPlot.MarkerSize = 0;
+            vegSpeedPlot.LegendText = "Herbivore";
+
+            var carnSpeedPlot = speedGraph.Add.Scatter(days, carnSpeed.ToArray());
+            carnSpeedPlot.LineWidth = 10;
+            carnSpeedPlot.MarkerSize = 0;
+            carnSpeedPlot.LegendText = "Carnivore";
 
             speedGraph.SavePng("Speedlinegraph.png", 25000, 5000);
         }
