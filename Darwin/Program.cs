@@ -3,19 +3,19 @@ using ScottPlot;
 
 
 //TODO:
-//Make find animals return a list
+
 
 //Make food expire after a few days
 
 
 
 
-//Make children inherit information from parents
+
 //Update Animal constructor method
 //Add more globals to allow for greater customisation
 
 //Make searchmate only work for those with similar diet
-//Add a mutation chance and movement penalty to globals
+
 //Add more detail for the 1-3 diets as currently identical
 
 //make system that chooses mate from list
@@ -25,13 +25,13 @@ using ScottPlot;
 //make carnivore food search system search for animals
 
 
-//Suppose each day had 10 action points, s with a speed of 10 could move once a day, while somethign with a speed of 5 could move twice a day?
+
 
 
 //system to assure mates are similar enough
 
-//IF CHANGING Map SIZE, NEED TO CHANGE Animal EDGE CASES
-//USE SPEED ATTRIBUTE TO DECIDE WHICH Animal GOES FIRST IN TURN
+
+//USE SPEED ATTRIBUTE TO DECIDE WHICH ANIMAL GOES FIRST IN TURN
 namespace Darwin
 {
     public class Manager
@@ -48,9 +48,12 @@ namespace Darwin
             List<int> omCounts = new List<int>();
             List<int> carnCounts = new List<int>();//count the number of each diet in a day
 
+            List<float> vegSpeed = new List<float>();//average the speed of every type every day.
+            List<float> omSpeed = new List<float>();
+            List<float> carnSpeed = new List<float>();
+
 
             int daycount = 0;//count the days, end sim after certain number of days
-            bool alldead = false;
             Map.main = new Map();//initialise new Map
 
             //animalList[0] = new Animal(Map.main.gridMap[2,2]);//initialise first Animal and assign a Tile
@@ -80,30 +83,34 @@ namespace Darwin
                 vegCounts.Add(animalList.CountList("Herbivore"));
                 omCounts.Add(animalList.CountList("Omnivore"));
                 carnCounts.Add(animalList.CountList("Carnivore"));
+
+                vegSpeed.Add(animalList.AvgSpeed("Herbivore"));
+                omSpeed.Add(animalList.AvgSpeed("Omnivore"));
+                carnSpeed.Add(animalList.AvgSpeed("Carnivore"));
             }
 
-            ScottPlot.Plot popgraph = new();
+            ScottPlot.Plot popGraph = new();
+            ScottPlot.Plot speedGraph = new();
 
             // Create X and Y data arrays for plotting
             int[] days = new int[animalCounts.Count];
-            int[] counts = animalCounts.ToArray();//Create two arrays to be plotted
-            int[] vegcountsarray = vegCounts.ToArray();
-            int[] omcountsarray = omCounts.ToArray();
-            int[] carncountsarray = carnCounts.ToArray();
 
             for (int i = 0; i < days.Length; i++)
             {
                 days[i] = i + 1;
-                counts[i] = 0;//make graphs without total pop
             }
 
-            popgraph.Add.Scatter(days, counts);//plot the graph
-            popgraph.Add.Scatter(days, omcountsarray);
-            popgraph.Add.Scatter(days, vegcountsarray);
-            
-            popgraph.Add.Scatter(days, carncountsarray);
+            popGraph.Add.Scatter(days, omCounts.ToArray());
+            popGraph.Add.Scatter(days, vegCounts.ToArray());
+            popGraph.Add.Scatter(days, carnCounts.ToArray());
 
-            popgraph.SavePng("Poplinegraph.png", 25000, 5000);//save file with name and dimensions
+            popGraph.SavePng("Poplinegraph.png", 25000, 5000);//save file with name and dimensions
+
+            speedGraph.Add.Scatter(days, omSpeed.ToArray());
+            speedGraph.Add.Scatter(days, vegSpeed.ToArray());
+            speedGraph.Add.Scatter(days, carnSpeed.ToArray());
+
+            speedGraph.SavePng("Speedlinegraph.png", 25000, 5000);
         }
 
     }
