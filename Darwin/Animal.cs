@@ -48,219 +48,23 @@ namespace Darwin
 
             lastaction = 0; //set last action to 0 since its ongoing
 
-            if (dietName == "Herbivore")
+            
+            if (hunger > 120)
             {
-                if (hunger > 120)
-                {
-                    tileAnimals = Manager.animallist.SearchList(currentx, currenty, this);//find if theres a mate on this tile
-                    if (tileAnimals.Count != 0)//check to see if the list is empty
-                    {
-                        mate = tileAnimals[0];//for nor make mate just first animal
-                        makechild(mate);
-                        return true;
-                    }
-
-                    else if (currentTile.plants > 0)
-                    {
-                        //current tile has food
-                        hunger = hunger + Globals.plantval;
-                        currentTile.plants--;//set food to false
-                        return true;
-                    }
-                    else
-                    {
-                        if (findmate() == true)
-                        {
-                            hunger = hunger - 10;//make hungrier due to moving
-                        }
-                        else if (findfood() == true)
-                        {
-                            hunger = hunger - 10;//make hungrier due to moving
-                        }
-                        hunger = hunger - 10;//loses 10 if doesnt move, 20 if does
-
-                        if (hunger <= 0)//check if animal is dead
-                        {
-                            currentTile.meat++;//increase the meat since animal is dead
-                            return false;//returns false if dead
-                        }
-                        return true;
-                    }
-                }
-
-                //for if hunger is lower than 90
-                if (currentTile.plants > 0)
-                {
-                    //current tile has food
-                    hunger = hunger + Globals.plantval;
-                    currentTile.plants--;//set food to false
-                    return true;
-                }
-                else
-                {
-                    if (findfood() == true)
-                    {
-                        hunger = hunger - 10;//make hungrier due to moving
-                    }
-                    hunger = hunger - 10;//loses 10 if doesnt move, 20 if does
-                }
-                if (hunger <= 0)//check if animal is dead
-                {
-                    //Console.WriteLine("BRO is ded");
-                    return false;//returns false if dead
-                }
+                SeekMateOrFood();
             }
-
-            if (dietName == "Carnivore")
+            else{
+                SearchOrStarve();
+            }
+            //for if hunger is lower than decided value
+            
+            if (hunger <= 0)//check if animal is dead
             {
-                if (hunger > 120)
-                {
-                    tileAnimals = Manager.animallist.SearchList(currentx, currenty, this);//find if theres a mate on this tile
-                    if (tileAnimals.Count != 0)//check to see if the list is empty
-                    {
-                        mate = tileAnimals[0];//for nor make mate just first animal
-                        makechild(mate);
-                        return true;
-                    }
-
-                    else if (currentTile.meat > 0)
-                    {
-                        //current tile has food
-                        hunger = hunger + Globals.meatval;
-                        currentTile.meat--;//set food to false
-                        return true;
-                    }
-                    else
-                    {
-                        if (findmate() == true)
-                        {
-                            hunger = hunger - 10;//make hungrier due to moving
-                        }
-                        else if (findfood() == true)
-                        {
-                            hunger = hunger - 10;//make hungrier due to moving
-                        }
-                        hunger = hunger - 10;//loses 10 if doesnt move, 20 if does
-
-                        if (hunger <= 0)//check if animal is dead
-                        {
-                            currentTile.meat++;//increase the meat since animal is dead
-                            return false;//returns false if dead
-                        }
-                        return true;
-                    }
-                }
-
-                //for if hunger is lower than 90
-                if (currentTile.meat > 0)
-                {
-                    //current tile has food
-                    hunger = hunger + Globals.meatval;
-                    currentTile.meat--;//set food to false
-                    return true;
-                }
-                else
-                {
-                    if (huntforfood() == true)//true means ate food on this tile
-                    {
-                        hunger = hunger + (int)Math.Round(Globals.meatval * 1.5);//make hungrier due to moving
-                    }
-                    else if (findfood() == true)
-                    {
-                        hunger = hunger - 10;//make hungrier due to moving
-                    }
-
-                    hunger = hunger - 10;//loses 10 if doesnt move, 20 if does
-                }
-                if (hunger <= 0)//check if animal is dead
-                {
-                    //Console.WriteLine("BRO is ded");
-                    return false;//returns false if dead
-                }
-                return true;
-
-
+                return false;//returns false if dead
             }
-
-            else//for omnivores
-            {
-                if (hunger > 120)
-                {
-                    tileAnimals = Manager.animallist.SearchList(currentx, currenty, this);//find if theres a mate on this tile
-                    if (tileAnimals.Count != 0)//check to see if the list is empty
-                    {
-                        mate = tileAnimals[0];//for nor make mate just first animal
-                        makechild(mate);
-                        return true;
-                    }
-
-                    else if (currentTile.meat > 0)
-                    {
-                        //current tile has food
-                        hunger = hunger + Globals.meatval;
-                        currentTile.meat--;//set food to false
-                        return true;
-                    }
-                    else if (currentTile.plants > 0)
-                    {
-                        //current tile has food
-                        hunger = hunger + Globals.plantval;
-                        currentTile.plants--;//set food to false
-                        return true;
-                    }
-                    else
-                    {
-                        if (findmate() == true)
-                        {
-                            hunger = hunger - 10;//make hungrier due to moving
-                        }
-                        else if (findfood() == true)
-                        {
-                            hunger = hunger - 10;//make hungrier due to moving
-                        }
-                        hunger = hunger - 10;//loses 10 if doesnt move, 20 if does
-
-                        if (hunger <= 0)//check if animal is dead
-                        {
-                            currentTile.meat++;//increase the meat since animal is dead
-                            return false;//returns false if dead
-                        }
-                        return true;
-                    }
-                }
-
-                //for if hunger is lower than 90
-                if (currentTile.meat > 0)
-                {
-                    //current tile has food
-                    hunger = hunger + Globals.meatval;
-                    currentTile.meat--;//set food to false
-                    return true;
-                }
-                else if (currentTile.plants > 0)
-                {
-                    //current tile has food
-                    hunger = hunger + Globals.plantval;
-                    currentTile.plants--;//set food to false
-                    return true;
-                }
-                else
-                {
-                    if (findfood() == true)
-                    {
-                        hunger = hunger - 10;//make hungrier due to moving
-                    }
-                    hunger = hunger - 10;//loses 10 if doesnt move, 20 if does
-                }
-                if (hunger <= 0)//check if animal is dead
-                {
-                    //Console.WriteLine("BRO is ded");
-                    return false;//returns false if dead
-                }
-                return true;
-
-            }
+            return true;
         }
+        
         
         bool findmate()//move to anearby tile with a mate
         {
@@ -545,6 +349,82 @@ namespace Darwin
             //change this for evo later
             //Console.WriteLine("BABY");
 
+        }
+
+        void SeekMateOrFood()
+        {
+            tileAnimals = Manager.animallist.SearchList(currentx, currenty, this);//find if theres a mate on this tile
+            if (tileAnimals.Count != 0)//check to see if the list is empty
+            {
+                
+                mate = tileAnimals[0];//for nor make mate just first animal
+                makechild(mate);
+            }
+
+            else if (EatFromTile())
+            {
+            }
+
+                    
+            else
+            {
+                if (findmate() == true)
+                {
+                    hunger = hunger - 10;//make hungrier due to moving
+                }
+                else if (findfood() == true)
+                {
+                    hunger = hunger - 10;//make hungrier due to moving
+                }
+                hunger = hunger - 10;//loses 10 if doesnt move, 20 if does
+            }
+        }
+
+        void SearchOrStarve()
+        {
+            if (EatFromTile())
+                {
+                }
+                else
+                {
+                    if (findfood() == true)
+                    {
+                        hunger = hunger - 10;//make hungrier due to moving
+                    }
+                    hunger = hunger - 10;//loses 10 if doesnt move, 20 if does
+                }
+        }
+
+        bool EatFromTile()
+        {
+            if (dietName == "Herbivore" && currentTile.plants > 0)
+            {
+                hunger += Globals.plantval;
+                currentTile.plants--;
+                return true;
+            }
+            if (dietName == "Carnivore" && currentTile.meat > 0)
+            {
+                hunger += Globals.meatval;
+                currentTile.meat--;
+                return true;
+            }
+            if (dietName == "Omnivore")
+            {
+                if (currentTile.meat > 0)
+                {
+                    hunger += Globals.meatval;
+                    currentTile.meat--;
+                    return true;
+                }
+                if (currentTile.plants > 0)
+                {
+                    hunger += Globals.plantval;
+                    currentTile.plants--;
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
