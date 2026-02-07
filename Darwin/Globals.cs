@@ -14,6 +14,7 @@ namespace Darwin
         public const float MinSize = 0.5f;
         public const int BabyPenalty = 40; //base hunger subtracted for child
         public const int BaseCost = 10; //base cost of living
+        public const float MateThreshold = 0.5f; //allows mating between further apart species
         public const float HerbivoreThreshold = 0.3f;
         public const float CarnivoreThreshold = 0.7f;
         public const int FoodChance = 7;//change these values to see different effects

@@ -364,7 +364,9 @@ namespace Darwin
             hunger -= (int)Math.Round(Globals.BaseCost * this.size); // base cost
 
             tileAnimals = Manager.animalList.SearchList(currentX, currentY, this);
-            if (tileAnimals.Count != 0)
+            Animal validMate;
+            validMate = ValidateMates(tileAnimals.ToArray());
+            if (validMate != null)
             {
                 mate = tileAnimals[0];
                 MakeChild(mate);
@@ -440,5 +442,31 @@ namespace Darwin
             }
             return false;
         }
+
+        Animal ValidateMates(Animal[] possibleMates)//a valid mate msut be within 1 abs of the traits
+        {
+            float currentMin = Globals.MateThreshold;
+            Animal bestMate = null;
+            if (possibleMates.Count() == 0)
+            {
+                return bestMate;
+            }
+
+            foreach (Animal possibleMate in possibleMates)
+            {
+                float speedDiff = Math.Abs(this.speed - possibleMate.speed) / (float)Globals.MaxSpeed;
+                float dietDiff = Math.Abs(this.diet - possibleMate.diet);
+                float sizeDiff = Math.Abs(this.size - possibleMate.size) / Globals.MaxSize;
+                float totalDiff = (speedDiff + dietDiff + sizeDiff) / 3.0f;
+                if (totalDiff <= currentMin)
+                {
+                    currentMin = totalDiff;
+                    bestMate = possibleMate;
+                }
+            }
+
+            return bestMate;
+
+            }
     }
 }
