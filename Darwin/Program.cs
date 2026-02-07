@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using ScottPlot;
 
 
@@ -52,6 +53,10 @@ namespace Darwin
             List<float> omSpeed = new List<float>();
             List<float> carnSpeed = new List<float>();
 
+            List<float> vegSize = new List<float>();//average the speed of every type every day.
+            List<float> omSize = new List<float>();
+            List<float> carnSize = new List<float>();
+
 
             int daycount = 0;//count the days, end sim after certain number of days
             Map.main = new Map();//initialise new Map
@@ -87,9 +92,13 @@ namespace Darwin
                 vegSpeed.Add(animalList.AvgSpeed("Herbivore"));
                 omSpeed.Add(animalList.AvgSpeed("Omnivore"));
                 carnSpeed.Add(animalList.AvgSpeed("Carnivore"));
+
+                vegSize.Add(animalList.AvgSize("Herbivore"));
+                omSize.Add(animalList.AvgSize("Omnivore"));
+                carnSize.Add(animalList.AvgSize("Carnivore"));
             }
 
-            ScottPlot.Plot popGraph = new();
+            
             ScottPlot.Plot speedGraph = new();
 
             // Create X and Y data arrays for plotting
@@ -100,43 +109,55 @@ namespace Darwin
                 days[i] = i + 1;
             }
 
-            var omCountPlot = popGraph.Add.Scatter(days, omCounts.ToArray());
+            MakeGraph("Poplinegraph", days, vegCounts, omCounts, carnCounts);
+            MakeGraph("Speedlinegraph", days, vegSpeed, omSpeed, carnSpeed);
+            
+
+
+        }
+
+        static public void MakeGraph(string name, int[] days, List<int> veg, List<int> om, List<int>carn)
+        {
+            ScottPlot.Plot Graph = new();
+
+            var omCountPlot = Graph.Add.Scatter(days, om.ToArray());
             omCountPlot.LineWidth = 10;
             omCountPlot.MarkerSize = 0;
             omCountPlot.LegendText = "Omnivore";
 
-            var carnCountPlot = popGraph.Add.Scatter(days, carnCounts.ToArray());
+            var carnCountPlot = Graph.Add.Scatter(days, carn.ToArray());
             carnCountPlot.LineWidth = 10;
             carnCountPlot.MarkerSize = 0;
             carnCountPlot.LegendText = "Carnivore";
 
-            var vegCountPlot = popGraph.Add.Scatter(days, vegCounts.ToArray());
+            var vegCountPlot = Graph.Add.Scatter(days, veg.ToArray());
             vegCountPlot.LineWidth = 10;
             vegCountPlot.MarkerSize = 0;
             vegCountPlot.LegendText = "Herbivore";
 
-            
+            Graph.SavePng(name + ".png", 10000, 2000);//save file with name and dimensions
+        }
 
-            popGraph.SavePng("Poplinegraph.png", 10000, 2000);//save file with name and dimensions
+        static public void MakeGraph(string name, int[] days, List<float> veg, List<float> om, List<float>carn)
+        {
+            ScottPlot.Plot Graph = new();
 
-            var omSpeedPlot = speedGraph.Add.Scatter(days, omSpeed.ToArray());
-            omSpeedPlot.LineWidth = 10;
-            omSpeedPlot.MarkerSize = 0;
-            omSpeedPlot.LegendText = "Omnivore";
+            var omCountPlot = Graph.Add.Scatter(days, om.ToArray());
+            omCountPlot.LineWidth = 10;
+            omCountPlot.MarkerSize = 0;
+            omCountPlot.LegendText = "Omnivore";
 
-            var carnSpeedPlot = speedGraph.Add.Scatter(days, carnSpeed.ToArray());
-            carnSpeedPlot.LineWidth = 10;
-            carnSpeedPlot.MarkerSize = 0;
-            carnSpeedPlot.LegendText = "Carnivore";
+            var carnCountPlot = Graph.Add.Scatter(days, carn.ToArray());
+            carnCountPlot.LineWidth = 10;
+            carnCountPlot.MarkerSize = 0;
+            carnCountPlot.LegendText = "Carnivore";
 
-            var vegSpeedPlot = speedGraph.Add.Scatter(days, vegSpeed.ToArray());
-            vegSpeedPlot.LineWidth = 10;
-            vegSpeedPlot.MarkerSize = 0;
-            vegSpeedPlot.LegendText = "Herbivore";
+            var vegCountPlot = Graph.Add.Scatter(days, veg.ToArray());
+            vegCountPlot.LineWidth = 10;
+            vegCountPlot.MarkerSize = 0;
+            vegCountPlot.LegendText = "Herbivore";
 
-            
-
-            speedGraph.SavePng("Speedlinegraph.png", 10000, 2000);
+            Graph.SavePng(name + ".png", 10000, 2000);//save file with name and dimensions
         }
 
     }
