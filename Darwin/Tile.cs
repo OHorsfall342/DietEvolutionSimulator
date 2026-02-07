@@ -17,7 +17,7 @@ namespace Darwin
         public void UpdateTile()//update the Tile, randomly check if food is generated
         {
             Random random = new Random();
-            int randomNumber = random.Next(0, Globals.foodchance); // Generates a random number between 0 to 14
+            int randomNumber = random.Next(0, Globals.FoodChance); // Generates a random number between 0 to 14
             if (randomNumber == 0)
             {
                 updatefood();

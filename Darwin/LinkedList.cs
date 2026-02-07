@@ -154,6 +154,37 @@ namespace Darwin
         }
     }
 
+    public float AvgSize(string filterDiet)//counts average speed of diet.
+        {
+            //filters based on diet, e.g. carnivore or All
+            int counter = 0;
+            float sum = 0;
+            Node current = head;
+            while (current != null)
+            {
+                if (filterDiet == "All")
+                {
+                    counter++;
+                    sum += current.Data.size;
+                }
+                else if (filterDiet == current.Data.dietName)
+                {
+                    counter++;
+                    sum += current.Data.size;
+                }
+                
+                current = current.Next;
+            }
+
+            if (counter == 0)//prevent div by 0 error
+            {
+                return 0;
+            }
+            return sum / counter;//return the average sopeed
+
+        }
+    }
+
     public class Node//code for ndoes in the linked lsit
     {
         public Animal Data { get; set; }

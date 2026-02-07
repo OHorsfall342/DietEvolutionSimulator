@@ -9,26 +9,27 @@ namespace Darwin
         //should speed also effect chance of being caught by predators? e.g. same speed gives 75% chance of caught
         //while a higher speed might give only 50%? i mean a hippo doesnt catch a emu veryoften
         public int speed = 10;
-
+        public float size = 1.0f; // new trait, 0.5 to 2 range
         int lastAction = 0; //how many turns their last action was
         public int currentX;
         public int currentY;
         public string dietName;
         public float diet = 0.0f;//0 = vege, 1.0 = meat eater, check globals for threshholds, inbetween is omnivore
 
-        public Animal(Tile _tile, float _diet, int _speed)//constructor method
+        public Animal(Tile _tile, float _diet, int _speed, float _size)//constructor method
         {
             speed = _speed;
+            size = _size;
             diet = _diet;
             currentTile = _tile;
             currentX = currentTile.posx;
             currentY = currentTile.posy;//set current positions to the Tile
 
-            if (diet < Globals.herbivoreThreshold)
+            if (diet < Globals.HerbivoreThreshold)
             {
                 dietName = "Herbivore";
             }
-            else if (diet > Globals.carnivoreThreshold)
+            else if (diet > Globals.CarnivoreThreshold)
             {
                 dietName = "Carnivore";
             }
@@ -86,7 +87,7 @@ namespace Darwin
                     return true;
                 }
             }
-            if (currentX < Globals.mapsize - 1)//check if on edge
+            if (currentX < Globals.MapSize - 1)//check if on edge
             {
                 if (Manager.animalList.SearchList(currentX + 1, currentY, this).Count != 0)//find mate, move to that Tile
                 {
@@ -95,7 +96,7 @@ namespace Darwin
                     return true;
                 }
             }
-            if (currentY < Globals.mapsize - 1)//check if on edge
+            if (currentY < Globals.MapSize - 1)//check if on edge
             {
                 if (Manager.animalList.SearchList(currentX, currentY + 1, this).Count != 0)//find mate, move to that Tile
                 {
@@ -120,11 +121,11 @@ namespace Darwin
                 {
                     tilefoods[0] = Map.main.gridMap[currentX - 1, currentY].plants;
                 }
-                if (currentY < Globals.mapsize - 1)//check if on edge
+                if (currentY < Globals.MapSize - 1)//check if on edge
                 {
                     tilefoods[1] = Map.main.gridMap[currentX, currentY + 1].plants;
                 }
-                if (currentX < Globals.mapsize - 1)//check if on edge
+                if (currentX < Globals.MapSize - 1)//check if on edge
                 {
                     tilefoods[2] = Map.main.gridMap[currentX + 1, currentY].plants;
 
@@ -178,11 +179,11 @@ namespace Darwin
                 {
                     tilefoods[0] = Map.main.gridMap[currentX - 1, currentY].meat;
                 }
-                if (currentY < Globals.mapsize - 1)//check if on edge
+                if (currentY < Globals.MapSize - 1)//check if on edge
                 {
                     tilefoods[1] = Map.main.gridMap[currentX, currentY + 1].meat;
                 }
-                if (currentX < Globals.mapsize - 1)//check if on edge
+                if (currentX < Globals.MapSize - 1)//check if on edge
                 {
                     tilefoods[2] = Map.main.gridMap[currentX + 1, currentY].meat;
 
@@ -236,11 +237,11 @@ namespace Darwin
                 {
                     tilefoods[0] = Map.main.gridMap[currentX - 1, currentY].plants + Map.main.gridMap[currentX - 1, currentY].meat;
                 }
-                if (currentY < Globals.mapsize - 1)//check if on edge
+                if (currentY < Globals.MapSize - 1)//check if on edge
                 {
                     tilefoods[1] = Map.main.gridMap[currentX, currentY + 1].plants + Map.main.gridMap[currentX, currentY + 1].meat;
                 }
-                if (currentX < Globals.mapsize - 1)//check if on edge
+                if (currentX < Globals.MapSize - 1)//check if on edge
                 {
                     tilefoods[2] = Map.main.gridMap[currentX + 1, currentY].plants + Map.main.gridMap[currentX + 1, currentY].meat;
 
@@ -320,31 +321,38 @@ namespace Darwin
         {
             
             Random random = new Random();
-            int randomNumber = random.Next(0, Globals.mutationchance); 
+            int randomNumber = random.Next(0, Globals.MutationChance); 
             float newDiet = (partner.diet + this.diet) / 2.0f;//generate a diet for the new item
+            float newSize = (partner.size + this.size) / 2.0f;//generate a size for the new item
             int newSpeed = (int)Math.Round((partner.speed + this.speed) / 2.0);//generate a diet for the new item
             if (randomNumber == 0)
             {
                 //mutate one variable up or down
-                int trait = random.Next(0, 2); // 0 = diet, 1 = speed
+                int trait = random.Next(0, 3); // 0 = diet, 1 = speed, 2 = size
                 int direction = random.Next(0, 2) == 0 ? -1 : 1; // positive or negative
 
                 if (trait == 0)
                 {
                     
-                    newDiet = Math.Clamp(newDiet + direction * Globals.mutationAmount, 0.0f, 1.0f);
+                    newDiet = Math.Clamp(newDiet + direction * Globals.MutationAmount, 0.0f, 1.0f);
                 }
                 else if (trait == 1)
                 {
                     
-                    newSpeed = Math.Clamp(newSpeed + direction, 1, Globals.maxSpeed); //find new speed between 1 and max speed
+                    newSpeed = Math.Clamp(newSpeed + direction, 1, Globals.MaxSpeed); //find new speed between 1 and max speed
+                }
+                else if (trait == 2)
+                {
+                    
+                    newSize = Math.Clamp(newSize + direction * Globals.MutationAmount, Globals.MinSize, Globals.MaxSize);
                 }
 
             }   
             
-            Manager.animalList.AddNode(new Animal(Map.main.gridMap[currentX, currentY], newDiet, newSpeed));//initialise new Animal
-            hunger = hunger - 40;
-            partner.hunger = partner.hunger - 40;//subtract hunger from each Animal as a penalty
+            Manager.animalList.AddNode(new Animal(Map.main.gridMap[currentX, currentY], newDiet, newSpeed, newSize));//initialise new Animal
+            hunger = hunger - (int)Math.Round(Globals.BabyPenalty * newSize);
+            partner.hunger = partner.hunger - (int)Math.Round(Globals.BabyPenalty * newSize);//subtract hunger from each Animal as a penalty
+            //more punishing to birth a large child
             //initialise new Animal and add it to the position
             //change this for evo later
             //Console.WriteLine("BABY");
@@ -399,13 +407,13 @@ namespace Darwin
         {
             if (dietName == "Herbivore" && currentTile.plants > 0)
             {
-                hunger += Globals.plantval;
+                hunger += Globals.PlantVal;
                 currentTile.plants--;
                 return true;
             }
             if (dietName == "Carnivore" && currentTile.meat > 0)
             {
-                hunger += Globals.meatval;
+                hunger += Globals.MeatVal;
                 currentTile.meat--;
                 return true;
             }
@@ -413,13 +421,13 @@ namespace Darwin
             {
                 if (currentTile.meat > 0)
                 {
-                    hunger += Globals.meatval;
+                    hunger += Globals.MeatVal;
                     currentTile.meat--;
                     return true;
                 }
                 if (currentTile.plants > 0)
                 {
-                    hunger += Globals.plantval;
+                    hunger += Globals.PlantVal;
                     currentTile.plants--;
                     return true;
                 }
