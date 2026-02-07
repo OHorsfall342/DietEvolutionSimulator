@@ -359,48 +359,54 @@ namespace Darwin
 
         }
 
-        void SeekMateOrFood()
+        void SeekMateOrFood() //findmate -> eat food -> hunt food, -> findmate, -> findfood
         {
-            tileAnimals = Manager.animalList.SearchList(currentX, currentY, this);//find if theres a mate on this Tile
-            if (tileAnimals.Count != 0)//check to see if the list is empty
+            hunger -= (int)Math.Round(Globals.BaseCost * this.size); // base cost
+
+            tileAnimals = Manager.animalList.SearchList(currentX, currentY, this);
+            if (tileAnimals.Count != 0)
             {
-                
-                mate = tileAnimals[0];//for nor make mate just first Animal
+                mate = tileAnimals[0];
                 MakeChild(mate);
+                return;
             }
 
-            else if (EatFromTile())
+            if (EatFromTile()) return;
+
+            if (dietName != "Herbivore" && HuntForFood())
             {
+                hunger += Globals.MeatVal;
+                return;
             }
 
-                    
-            else
+            if (FindMate())
             {
-                if (FindMate() == true)
-                {
-                    hunger = hunger - 10;//make hungrier due to moving
-                }
-                else if (FindFood() == true)
-                {
-                    hunger = hunger - 10;//make hungrier due to moving
-                }
-                hunger = hunger - 10;//loses 10 if doesnt move, 20 if does
+                hunger -= (int)Math.Round(Globals.BaseCost * this.size);
+                return;
+            }
+
+            if (FindFood())
+            {
+                hunger -= (int)Math.Round(Globals.BaseCost * this.size);
             }
         }
 
         void SearchOrStarve()
         {
-            if (EatFromTile())
-                {
-                }
-                else
-                {
-                    if (FindFood() == true)
-                    {
-                        hunger = hunger - 10;//make hungrier due to moving
-                    }
-                    hunger = hunger - 10;//loses 10 if doesnt move, 20 if does
-                }
+            hunger -= (int) Math.Round(Globals.BaseCost * this.size); // base cost of existing
+
+            if (EatFromTile()) return;
+
+            if (dietName != "Herbivore" && HuntForFood())
+            {
+                hunger += Globals.MeatVal;
+                return;
+            }
+
+            if (FindFood())
+            {
+                hunger -= (int) Math.Round(Globals.BaseCost * this.size); // extra cost for moving
+            }
         }
 
         bool EatFromTile()

@@ -152,9 +152,9 @@ namespace Darwin
             return sum / counter;//return the average sopeed
 
         }
-    }
+    
 
-    public float AvgSize(string filterDiet)//counts average speed of diet.
+        public float AvgSize(string filterDiet)//counts average speed of diet.
         {
             //filters based on diet, e.g. carnivore or All
             int counter = 0;
@@ -184,6 +184,7 @@ namespace Darwin
 
         }
     }
+    
 
     public class Node//code for ndoes in the linked lsit
     {
