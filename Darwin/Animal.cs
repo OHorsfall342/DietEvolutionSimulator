@@ -312,7 +312,19 @@ namespace Darwin
             {
                 return false;
             }
-            //Console.WriteLine("NOM");
+            
+            float sizeDiff = this.size - victim.size;
+            float successChance = 0.6f + (sizeDiff * 0.5f);
+            successChance = Math.Clamp(successChance, 0.05f, 0.95f);//max and min chances
+
+            Random random = new Random();
+            if (random.NextDouble() > successChance)
+            {
+                hunger -= Globals.BaseCost;
+                return true; // hunt failed but action still used
+            }
+
+            hunger += (int) Math.Round(Globals.MeatVal * victim.size);
             Manager.animalList.RemoveNode(victim);//eat the victim
             return true;
         }
@@ -376,7 +388,6 @@ namespace Darwin
 
             if (dietName != "Herbivore" && HuntForFood())
             {
-                hunger += Globals.MeatVal;
                 return;
             }
 
@@ -400,7 +411,7 @@ namespace Darwin
 
             if (dietName != "Herbivore" && HuntForFood())
             {
-                hunger += Globals.MeatVal;
+                //successfully eaten an animal
                 return;
             }
 
