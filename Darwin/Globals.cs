@@ -7,12 +7,14 @@ namespace Darwin
         public const int MapSize = 12;
         public const int PlantVal = 30;
         public const int MeatVal = 120;
+        public const int OldMeatVal = 50; //value of meat found on floor
         public const int MutationChance= 4;
         public const float MutationAmount = 0.1f;
         public const int MaxSpeed = 10;
         public const float MaxSize = 2.0f;
         public const float MinSize = 0.5f;
         public const int BabyPenalty = 40; //base hunger subtracted for child
+        public const float OmPenalty = 0.8f; //omnivores get less from food as their digestive systems are less specialised
         public const int BaseCost = 10; //base cost of living
         public const float MateThreshold = 0.5f; //allows mating between further apart species
         public const float HerbivoreThreshold = 0.3f;

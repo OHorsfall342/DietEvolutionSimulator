@@ -15,6 +15,8 @@ namespace Darwin
         public int currentY;
         public string dietName;
         public float diet = 0.0f;//0 = vege, 1.0 = meat eater, check globals for threshholds, inbetween is omnivore
+        float plantEfficiency = 1.0f;
+        float meatEfficiency = 1.0f;
 
         public Animal(Tile _tile, float _diet, int _speed, float _size)//constructor method
         {
@@ -36,6 +38,14 @@ namespace Darwin
             else
             {
                 dietName = "Omnivore";
+                float omPosition = (diet - Globals.HerbivoreThreshold) / (Globals.CarnivoreThreshold - Globals.HerbivoreThreshold);
+                // omPosition: 0.0 = near herbivore, 1.0 = near carnivore
+
+                plantEfficiency = 1.0f - (omPosition * 0.4f);  // 1.0 to 0.6  
+                meatEfficiency = 0.6f + (omPosition * 0.4f);   // 0.6 to 1.0
+
+                //average omnivore will get a 0.8 penalty on all foods
+                //clsoer to either side gets clsoer to 1 and 0.6
             }
         }
 
@@ -324,7 +334,15 @@ namespace Darwin
                 return true; // hunt failed but action still used
             }
 
-            hunger += (int) Math.Round(Globals.MeatVal * victim.size);
+            if (dietName == "Omnivore")
+            {
+                hunger += (int) Math.Round(Globals.MeatVal * victim.size * meatEfficiency);//add the omnivore penalty
+            }
+            else
+            {
+                hunger += (int) Math.Round(Globals.MeatVal * victim.size);
+            }
+            
             Manager.animalList.RemoveNode(victim);//eat the victim
             return true;
         }
@@ -431,7 +449,7 @@ namespace Darwin
             }
             if (dietName == "Carnivore" && currentTile.meat > 0)
             {
-                hunger += Globals.MeatVal;
+                hunger += Globals.OldMeatVal;
                 currentTile.meat--;
                 return true;
             }
@@ -439,13 +457,13 @@ namespace Darwin
             {
                 if (currentTile.meat > 0)
                 {
-                    hunger += Globals.MeatVal;
+                    hunger += (int) Math.Round(Globals.OldMeatVal * meatEfficiency);
                     currentTile.meat--;
                     return true;
                 }
                 if (currentTile.plants > 0)
                 {
-                    hunger += Globals.PlantVal;
+                    hunger += (int) Math.Round(Globals.PlantVal * plantEfficiency);
                     currentTile.plants--;
                     return true;
                 }
