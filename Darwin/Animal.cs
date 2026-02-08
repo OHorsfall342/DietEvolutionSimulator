@@ -71,7 +71,7 @@ namespace Darwin
         {
             if (currentX > 0)//check if on edge
             {
-                if (Manager.animalList.SearchList(currentX - 1, currentY, this).Count != 0)//find mate, move to that Tile
+                if (ValidateMates(Manager.animalList.SearchList(currentX - 1, currentY, this).ToArray()) != null)//find mate, move to that Tile
                 {
                     currentTile = Map.main.gridMap[currentX - 1, currentY];
                     currentX = currentX - 1;//set new currentX
@@ -80,7 +80,7 @@ namespace Darwin
             }
             if (currentY > 0)//check if on edge
             {
-                if (Manager.animalList.SearchList(currentX, currentY - 1, this).Count != 0)//find mate, move to that Tile
+                if (ValidateMates(Manager.animalList.SearchList(currentX, currentY - 1, this).ToArray()) != null)//find mate, move to that Tile
                 {
                     currentTile = Map.main.gridMap[currentX, currentY - 1];
                     currentY = currentY - 1; //set new currentY
@@ -89,7 +89,7 @@ namespace Darwin
             }
             if (currentX < Globals.MapSize - 1)//check if on edge
             {
-                if (Manager.animalList.SearchList(currentX + 1, currentY, this).Count != 0)//find mate, move to that Tile
+                if (ValidateMates(Manager.animalList.SearchList(currentX + 1, currentY, this).ToArray()) != null)//find mate, move to that Tile
                 {
                     currentTile = Map.main.gridMap[currentX + 1, currentY];
                     currentX = currentX + 1;//set new currentX
@@ -98,7 +98,7 @@ namespace Darwin
             }
             if (currentY < Globals.MapSize - 1)//check if on edge
             {
-                if (Manager.animalList.SearchList(currentX, currentY + 1, this).Count != 0)//find mate, move to that Tile
+                if (ValidateMates(Manager.animalList.SearchList(currentX, currentY + 1, this).ToArray()) != null)//find mate, move to that Tile
                 {
                     currentTile = Map.main.gridMap[currentX, currentY + 1];
                     currentY = currentY + 1;
@@ -368,8 +368,7 @@ namespace Darwin
             validMate = ValidateMates(tileAnimals.ToArray());
             if (validMate != null)
             {
-                mate = tileAnimals[0];
-                MakeChild(mate);
+                MakeChild(validMate);
                 return;
             }
 
