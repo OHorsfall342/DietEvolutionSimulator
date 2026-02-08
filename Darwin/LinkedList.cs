@@ -69,7 +69,7 @@ namespace Darwin
             {
                 if (current.Data.TakeAction() == false)
                 {
-
+                    Map.main.gridMap[current.Data.currentX, current.Data.currentY].meat += 1;//add meat on death, could add size scaling later
                     RemoveNode(current.Data);//if return false, hunger = 0 so kill 
                     //Console.WriteLine("bro is ded");
                 }

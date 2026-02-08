@@ -3,6 +3,22 @@ using System.Reflection;
 using ScottPlot;
 
 
+//FEATURES:
+//Grid-based ecosystem simulation with evolving animals
+//Three diet types: Herbivore (0-0.3), Omnivore (0.3-0.7), Carnivore (0.7-1.0) - can be varied in globals
+//Three evolvable traits: diet, speed, size
+//Trait inheritance: children average parent traits with mutation chance
+//Mate validation: animals must be similar enough across all traits to breed 
+//Hunting system: carnivores and omnivores can hunt other animals on their tile
+//Hunt success based on size difference, failures cost hunger
+//Omnivores consume food less efficiently
+//Size affects hunt success, base hunger cost and baby cost
+//Speed affects how frequently an animal moves
+//Dead animals drop meat, less valuable
+//Plants spawn randomly on tiles each day
+//Population, speed, and size tracked and graphed over time per diet type
+
+
 //TODO:
 
 
@@ -80,6 +96,7 @@ namespace Darwin
                 {
                     animalList.ActionList();//make animals take action
                 }
+                animalList.ResetHunts();
 
                     
                 daycount++;//increment the days
