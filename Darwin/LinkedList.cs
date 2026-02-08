@@ -147,7 +147,7 @@ namespace Darwin
 
             if (counter == 0)//prevent div by 0 error
             {
-                return 0;
+                return float.NaN;;
             }
             return sum / counter;//return the average sopeed
 
@@ -178,10 +178,20 @@ namespace Darwin
 
             if (counter == 0)//prevent div by 0 error
             {
-                return 0;
+                return float.NaN;
             }
             return sum / counter;//return the average sopeed
 
+        }
+
+        public void ResetHunts()
+        {
+            Node current = head;
+            while (current != null)
+            {
+                current.Data.huntedThisTurn = false;
+                current = current.Next;
+            }
         }
     }
     
@@ -197,5 +207,7 @@ namespace Darwin
             this.Next = null;
         }
     }
+
+    
 
 }
