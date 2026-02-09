@@ -1,3 +1,5 @@
+using System.Drawing;
+
 namespace Darwin
 {   
     static public class GraphMaker
@@ -45,5 +47,55 @@ namespace Darwin
 
                 Graph.SavePng(name + ".png", 10000, 2000);//save file with name and dimensions
             }
-        }
+        
+
+        static public void MakeScatterGraph(string name, List<Animal> animalList)
+            {
+                ScottPlot.Plot Graph = new();
+
+                List<double> vegX = new(), vegY = new();//three different lists so they can eb different colours
+                List<double> omX = new(), omY = new();
+                List<double> carnX = new(), carnY = new();
+
+                foreach (Animal animal in animalList)
+                {
+                    if (animal.dietName == "Herbivore")
+                    { 
+                        vegX.Add(animal.size);
+                        vegY.Add(animal.speed); 
+                    }
+                    else if (animal.dietName == "Omnivore")
+                    {
+                        omX.Add(animal.size);
+                        omY.Add(animal.speed); 
+                    }
+                    else
+                    {
+                        carnX.Add(animal.size);
+                        carnY.Add(animal.speed); 
+                    }
+                    
+                }
+
+                var vegPlot = Graph.Add.Scatter(vegX, vegY);//size x axis speed y axis
+                vegPlot.LineWidth = 0;
+                vegPlot.MarkerSize = 15;
+                vegPlot.MarkerShape = ScottPlot.MarkerShape.Cross;
+                vegPlot.Color = ScottPlot.Colors.Green;
+                
+                var omPlot = Graph.Add.Scatter(omX, omY);//size x axis speed y axis
+                omPlot.LineWidth = 0;
+                omPlot.MarkerSize = 15;
+                omPlot.MarkerShape = ScottPlot.MarkerShape.Cross;
+                omPlot.Color = ScottPlot.Colors.Orange;
+
+                var carnPlot = Graph.Add.Scatter(carnX, carnY);//size x axis speed y axis
+                carnPlot.LineWidth = 0;
+                carnPlot.MarkerSize = 15;
+                carnPlot.MarkerShape = ScottPlot.MarkerShape.Cross;
+                carnPlot.Color = ScottPlot.Colors.Red;
+                Graph.SavePng(name + ".png", 4000, 4000);
+            }
+
+    }
 }

@@ -122,6 +122,19 @@ namespace Darwin
             return counter;//return the total number of animals
 
         }
+        public List<Animal> ReturnAllAnimals()
+        {
+
+            List<Animal> animalList = new List<Animal>();
+            Node current = head;
+            while (current != null)
+            {
+                animalList.Add(current.Data);
+                current = current.Next;
+            }
+
+            return animalList;
+        }
 
         public float AvgSpeed(string filterDiet)//counts average speed of diet.
         {

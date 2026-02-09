@@ -128,6 +128,7 @@ namespace Darwin
             GraphMaker.MakeLineGraph("Poplinegraph", days, vegCounts, omCounts, carnCounts);
             GraphMaker.MakeLineGraph("Speedlinegraph", days, vegSpeed, omSpeed, carnSpeed);
             GraphMaker.MakeLineGraph("Sizelinegraph", days, vegSize, omSize, carnSize);
+            GraphMaker.MakeScatterGraph("FinalPop", animalList.ReturnAllAnimals());
             
 
 

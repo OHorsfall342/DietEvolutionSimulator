@@ -17,7 +17,7 @@ namespace Darwin
         public float diet = 0.0f;//0 = vege, 1.0 = meat eater, check globals for threshholds, inbetween is omnivore
         float plantEfficiency = 1.0f;
         float meatEfficiency = 1.0f;
-        bool huntedThisTurn = false;
+        public bool huntedThisTurn = false;
 
         public Animal(Tile _tile, float _diet, int _speed, float _size)//constructor method
         {
