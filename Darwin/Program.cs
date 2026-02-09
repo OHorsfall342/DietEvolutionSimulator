@@ -87,9 +87,10 @@ namespace Darwin
 
             while (daycount < Globals.TotalDays)
             {
+                int total = animalList.CountList("All");
                 if (daycount % 20 == 0)
                 {
-                    Console.WriteLine(daycount);
+                    Console.WriteLine("Day: " + daycount + " Alive: " + total);
                 }
                 Map.main.UpdateTiles();//update all tiles
                 for (int i = 0; i < Globals.ActionsPerDay; i++)
@@ -101,7 +102,7 @@ namespace Darwin
                     
                 daycount++;//increment the days
                 //Console.WriteLine(animalList.CountList(0));
-                animalCounts.Add(animalList.CountList("All"));//add to list for graph
+                animalCounts.Add(total);//add to list for graph
                 vegCounts.Add(animalList.CountList("Herbivore"));
                 omCounts.Add(animalList.CountList("Omnivore"));
                 carnCounts.Add(animalList.CountList("Carnivore"));

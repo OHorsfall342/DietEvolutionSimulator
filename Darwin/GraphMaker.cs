@@ -79,20 +79,17 @@ namespace Darwin
 
                 var vegPlot = Graph.Add.Scatter(vegX, vegY);//size x axis speed y axis
                 vegPlot.LineWidth = 0;
-                vegPlot.MarkerSize = 15;
-                vegPlot.MarkerShape = ScottPlot.MarkerShape.Cross;
+                vegPlot.MarkerSize = 20;
                 vegPlot.Color = ScottPlot.Colors.Green;
                 
                 var omPlot = Graph.Add.Scatter(omX, omY);//size x axis speed y axis
                 omPlot.LineWidth = 0;
-                omPlot.MarkerSize = 15;
-                omPlot.MarkerShape = ScottPlot.MarkerShape.Cross;
-                omPlot.Color = ScottPlot.Colors.Orange;
+                omPlot.MarkerSize = 20;
+                omPlot.Color = ScottPlot.Colors.Blue;
 
                 var carnPlot = Graph.Add.Scatter(carnX, carnY);//size x axis speed y axis
                 carnPlot.LineWidth = 0;
-                carnPlot.MarkerSize = 15;
-                carnPlot.MarkerShape = ScottPlot.MarkerShape.Cross;
+                carnPlot.MarkerSize = 20;
                 carnPlot.Color = ScottPlot.Colors.Red;
                 Graph.SavePng(name + ".png", 4000, 4000);
             }

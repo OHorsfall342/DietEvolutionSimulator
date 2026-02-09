@@ -3,12 +3,12 @@ namespace Darwin
     public static class Globals
     {
         public static Random random = new Random();
-        public const int TotalDays = 3000;
+        public const int TotalDays = 1000;
         public const int ActionsPerDay = 10; // amount of actions in a day, standard speed of 10 would compelte 1, speed of 5 would complete 2 etc
         public const int MapSize = 30;
-        public const int PlantVal = 100;
-        public const int MeatVal = 180;
-        public const int OldMeatVal = 60; //value of meat found on floor
+        public const int PlantVal = 60;
+        public const int MeatVal = 80;
+        public const int OldMeatVal = 30; //value of meat found on floor
         public const int MutationChance= 3;
         public const float MutationAmount = 0.1f;
         public const int MaxSpeed = 10;
