@@ -20,5 +20,6 @@ namespace Darwin
         public const float HerbivoreThreshold = 0.3f;
         public const float CarnivoreThreshold = 0.7f;
         public const int FoodChance = 4;//change these values to see different effects
+        public const int MaxFood = 5; //Max amount of food that can be stored on one tile
     }
 }

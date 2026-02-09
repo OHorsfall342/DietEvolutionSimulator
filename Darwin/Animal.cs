@@ -397,6 +397,7 @@ namespace Darwin
 
         void SeekMateOrFood() //findmate -> eat food -> hunt food, -> findmate, -> findfood
         {
+            Random random = new Random();
             hunger -= (int)Math.Round(Globals.BaseCost * this.size); // base cost
 
             tileAnimals = Manager.animalList.SearchList(currentX, currentY, this);
@@ -404,6 +405,10 @@ namespace Darwin
             validMate = ValidateMates(tileAnimals.ToArray());
             if (validMate != null)
             {
+                int babyCounter = 1;
+                float extraBabyChance = 0.3f / size;
+                while (random.NextDouble() < extraBabyChance && babyCounter < 5) //allow for multiple babies, more likely with smaller animals, capepd at 5
+                    MakeChild(validMate);
                 MakeChild(validMate);
                 return;
             }
