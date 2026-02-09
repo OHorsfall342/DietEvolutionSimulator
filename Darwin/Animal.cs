@@ -405,8 +405,10 @@ namespace Darwin
                 int babyCounter = 1;
                 float extraBabyChance = 0.3f / size;
                 while (Globals.random.NextDouble() < extraBabyChance && babyCounter < 5) //allow for multiple babies, more likely with smaller animals, capepd at 5
+                {
                     babyCounter++;
                     MakeChild(validMate);
+                }
                 MakeChild(validMate);
                 return;
             }
