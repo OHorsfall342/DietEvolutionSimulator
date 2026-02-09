@@ -17,15 +17,19 @@ namespace Darwin
         public void UpdateTile()//update the Tile, randomly check if food is generated
         {
             Random random = new Random();
-            int randomNumber = random.Next(0, Globals.FoodChance); // Generates a random number between 0 to 14
-            if (randomNumber == 0)
+            UpdateFood(random.Next(0, Globals.FoodChance));
+            if (plants > Globals.MaxFood)
             {
-                updatefood();
+                plants = Globals.MaxFood;
+            }
+            if (meat > Globals.MaxFood)
+            {
+                meat = Globals.MaxFood;
             }
         }
-        public void updatefood()//if food is true, set to false. If food is false, set to true
+        public void UpdateFood(int amount)
         {
-            plants++;
+            plants += amount;
             return;
         }
 

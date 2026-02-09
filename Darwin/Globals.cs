@@ -2,7 +2,7 @@ namespace Darwin
 {
     public static class Globals
     {
-        public const int TotalDays = 15000;
+        public const int TotalDays = 3000;
         public const int ActionsPerDay = 10; // amount of actions in a day, standard speed of 10 would compelte 1, speed of 5 would complete 2 etc
         public const int MapSize = 30;
         public const int PlantVal = 100;
