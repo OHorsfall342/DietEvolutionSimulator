@@ -332,8 +332,7 @@ namespace Darwin
             float successChance = 0.15f + (sizeDiff * 0.5f);
             successChance = Math.Clamp(successChance, 0f, 0.3f);//max and min chances
 
-            Random random = new Random();
-            if (random.NextDouble() > successChance)
+            if (Globals.random.NextDouble() > successChance)
             {
                 hunger -= Globals.BaseCost;
                 return true; // hunt failed but action still used
@@ -356,16 +355,15 @@ namespace Darwin
         void MakeChild(Animal partner)//pass in a partner to make the child with
         {
             
-            Random random = new Random();
-            int randomNumber = random.Next(0, Globals.MutationChance); 
+            int randomNumber = Globals.random.Next(0, Globals.MutationChance); 
             float newDiet = (partner.diet + this.diet) / 2.0f;//generate a diet for the new item
             float newSize = (partner.size + this.size) / 2.0f;//generate a size for the new item
             int newSpeed = (int)Math.Round((partner.speed + this.speed) / 2.0);//generate a diet for the new item
             if (randomNumber == 0)
             {
                 //mutate one variable up or down
-                int trait = random.Next(0, 3); // 0 = diet, 1 = speed, 2 = size
-                int direction = random.Next(0, 2) == 0 ? -1 : 1; // positive or negative
+                int trait = Globals.random.Next(0, 3); // 0 = diet, 1 = speed, 2 = size
+                int direction = Globals.random.Next(0, 2) == 0 ? -1 : 1; // positive or negative
 
                 if (trait == 0)
                 {
@@ -397,7 +395,6 @@ namespace Darwin
 
         void SeekMateOrFood() //findmate -> eat food -> hunt food, -> findmate, -> findfood
         {
-            Random random = new Random();
             hunger -= (int)Math.Round(Globals.BaseCost * this.size); // base cost
 
             tileAnimals = Manager.animalList.SearchList(currentX, currentY, this);
@@ -407,7 +404,7 @@ namespace Darwin
             {
                 int babyCounter = 1;
                 float extraBabyChance = 0.3f / size;
-                while (random.NextDouble() < extraBabyChance && babyCounter < 5) //allow for multiple babies, more likely with smaller animals, capepd at 5
+                while (Globals.random.NextDouble() < extraBabyChance && babyCounter < 5) //allow for multiple babies, more likely with smaller animals, capepd at 5
                     MakeChild(validMate);
                 MakeChild(validMate);
                 return;

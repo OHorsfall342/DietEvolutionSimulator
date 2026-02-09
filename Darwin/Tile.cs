@@ -16,8 +16,7 @@ namespace Darwin
 
         public void UpdateTile()//update the Tile, randomly check if food is generated
         {
-            Random random = new Random();
-            UpdateFood(random.Next(0, Globals.FoodChance));
+            UpdateFood(Globals.random.Next(0, Globals.FoodChance));
             if (plants > Globals.MaxFood)
             {
                 plants = Globals.MaxFood;
