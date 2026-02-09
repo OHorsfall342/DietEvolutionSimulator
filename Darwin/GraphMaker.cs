@@ -62,17 +62,17 @@ namespace Darwin
                     if (animal.dietName == "Herbivore")
                     { 
                         vegX.Add(animal.size);
-                        vegY.Add(animal.speed); 
+                        vegY.Add(animal.speed + (Globals.random.NextDouble() - 0.5) * 0.5);
                     }
                     else if (animal.dietName == "Omnivore")
                     {
                         omX.Add(animal.size);
-                        omY.Add(animal.speed); 
+                        omY.Add(animal.speed + (Globals.random.NextDouble() - 0.5) * 0.5);
                     }
                     else
                     {
                         carnX.Add(animal.size);
-                        carnY.Add(animal.speed); 
+                        carnY.Add(animal.speed + (Globals.random.NextDouble() - 0.5) * 0.5);
                     }
                     
                 }
