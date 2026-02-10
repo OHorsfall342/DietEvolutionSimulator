@@ -329,8 +329,8 @@ namespace Darwin
             }
             
             float sizeDiff = this.size - victim.size;
-            float successChance = 0.15f + (sizeDiff * 0.5f);
-            successChance = Math.Clamp(successChance, 0f, 0.3f);//max and min chances
+            float successChance = 0.1f + (sizeDiff * 0.5f);
+            successChance = Math.Clamp(successChance, 0f, 0.2f);//max and min chances
 
             if (Globals.random.NextDouble() > successChance)
             {
